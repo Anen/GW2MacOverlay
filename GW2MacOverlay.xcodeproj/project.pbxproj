@@ -17,6 +17,13 @@
 		0BF8328017C2E40400414C78 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF8326017C2E40400414C78 /* Cocoa.framework */; };
 		0BF8328817C2E40400414C78 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0BF8328617C2E40400414C78 /* InfoPlist.strings */; };
 		0BF8328B17C2E40400414C78 /* GW2MacOverlayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF8328A17C2E40400414C78 /* GW2MacOverlayTests.m */; };
+		0BF8329917C2E48B00414C78 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF8329717C2E48B00414C78 /* MasterViewController.m */; };
+		0BF8329A17C2E48B00414C78 /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BF8329817C2E48B00414C78 /* MasterViewController.xib */; };
+		0BF8329D17C2E4A300414C78 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF8329C17C2E4A300414C78 /* Event.m */; };
+		0BF832A017C2E4AF00414C78 /* World.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF8329F17C2E4AF00414C78 /* World.m */; };
+		0BF832A317C2E4B900414C78 /* EventGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF832A217C2E4B900414C78 /* EventGroup.m */; };
+		0BF832A617C2E4D100414C78 /* WorldNamesJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF832A517C2E4D100414C78 /* WorldNamesJSONParser.m */; };
+		0BF832A917C2E4E300414C78 /* EventsJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF832A817C2E4E300414C78 /* EventsJSONParser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +56,19 @@
 		0BF8328717C2E40400414C78 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0BF8328917C2E40400414C78 /* GW2MacOverlayTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GW2MacOverlayTests.h; sourceTree = "<group>"; };
 		0BF8328A17C2E40400414C78 /* GW2MacOverlayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GW2MacOverlayTests.m; sourceTree = "<group>"; };
+		0BF8329617C2E48B00414C78 /* MasterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
+		0BF8329717C2E48B00414C78 /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterViewController.m; sourceTree = "<group>"; };
+		0BF8329817C2E48B00414C78 /* MasterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MasterViewController.xib; sourceTree = "<group>"; };
+		0BF8329B17C2E4A300414C78 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		0BF8329C17C2E4A300414C78 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
+		0BF8329E17C2E4AF00414C78 /* World.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = World.h; sourceTree = "<group>"; };
+		0BF8329F17C2E4AF00414C78 /* World.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = World.m; sourceTree = "<group>"; };
+		0BF832A117C2E4B900414C78 /* EventGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventGroup.h; sourceTree = "<group>"; };
+		0BF832A217C2E4B900414C78 /* EventGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventGroup.m; sourceTree = "<group>"; };
+		0BF832A417C2E4D100414C78 /* WorldNamesJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorldNamesJSONParser.h; sourceTree = "<group>"; };
+		0BF832A517C2E4D100414C78 /* WorldNamesJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorldNamesJSONParser.m; sourceTree = "<group>"; };
+		0BF832A717C2E4E300414C78 /* EventsJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsJSONParser.h; sourceTree = "<group>"; };
+		0BF832A817C2E4E300414C78 /* EventsJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsJSONParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,9 +134,8 @@
 		0BF8326617C2E40400414C78 /* GW2MacOverlay */ = {
 			isa = PBXGroup;
 			children = (
-				0BF8327217C2E40400414C78 /* AppDelegate.h */,
-				0BF8327317C2E40400414C78 /* AppDelegate.m */,
-				0BF8327517C2E40400414C78 /* MainMenu.xib */,
+				0BF8329517C2E42400414C78 /* Model */,
+				0BF8329417C2E41E00414C78 /* GUI */,
 				0BF8326717C2E40400414C78 /* Supporting Files */,
 			);
 			path = GW2MacOverlay;
@@ -151,6 +170,36 @@
 				0BF8328617C2E40400414C78 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0BF8329417C2E41E00414C78 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				0BF8327217C2E40400414C78 /* AppDelegate.h */,
+				0BF8327317C2E40400414C78 /* AppDelegate.m */,
+				0BF8327517C2E40400414C78 /* MainMenu.xib */,
+				0BF8329617C2E48B00414C78 /* MasterViewController.h */,
+				0BF8329717C2E48B00414C78 /* MasterViewController.m */,
+				0BF8329817C2E48B00414C78 /* MasterViewController.xib */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
+		0BF8329517C2E42400414C78 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0BF8329B17C2E4A300414C78 /* Event.h */,
+				0BF8329C17C2E4A300414C78 /* Event.m */,
+				0BF8329E17C2E4AF00414C78 /* World.h */,
+				0BF8329F17C2E4AF00414C78 /* World.m */,
+				0BF832A117C2E4B900414C78 /* EventGroup.h */,
+				0BF832A217C2E4B900414C78 /* EventGroup.m */,
+				0BF832A417C2E4D100414C78 /* WorldNamesJSONParser.h */,
+				0BF832A517C2E4D100414C78 /* WorldNamesJSONParser.m */,
+				0BF832A717C2E4E300414C78 /* EventsJSONParser.h */,
+				0BF832A817C2E4E300414C78 /* EventsJSONParser.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -227,6 +276,7 @@
 				0BF8326B17C2E40400414C78 /* InfoPlist.strings in Resources */,
 				0BF8327117C2E40400414C78 /* Credits.rtf in Resources */,
 				0BF8327717C2E40400414C78 /* MainMenu.xib in Resources */,
+				0BF8329A17C2E48B00414C78 /* MasterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +313,12 @@
 			files = (
 				0BF8326D17C2E40400414C78 /* main.m in Sources */,
 				0BF8327417C2E40400414C78 /* AppDelegate.m in Sources */,
+				0BF8329917C2E48B00414C78 /* MasterViewController.m in Sources */,
+				0BF8329D17C2E4A300414C78 /* Event.m in Sources */,
+				0BF832A017C2E4AF00414C78 /* World.m in Sources */,
+				0BF832A317C2E4B900414C78 /* EventGroup.m in Sources */,
+				0BF832A617C2E4D100414C78 /* WorldNamesJSONParser.m in Sources */,
+				0BF832A917C2E4E300414C78 /* EventsJSONParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
