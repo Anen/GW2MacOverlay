@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'GW2MacOverlay' target in the 'GW2MacOverlay' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
