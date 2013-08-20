@@ -14,13 +14,11 @@
 @property NSArray *_eventGroups;
 @property NSArray *_worldNames;
 
-@property NSDateFormatter *_lastUpdatedFormatter;
 @property EventsJSONParser *_ejp;
 @property NSInteger _selectedWorldId;
 
 @property IBOutlet NSPopUpButton *_worldSelection;
 @property IBOutlet NSTableView *_statusTable;
-@property IBOutlet NSTextField *_updateText;
 
 -(IBAction)worldSelected:(id)sender;
 

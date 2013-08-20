@@ -23,10 +23,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // INITIALIZATION
-        // Last updated
-        self._lastUpdatedFormatter = [[NSDateFormatter alloc] init];
-        [self._lastUpdatedFormatter setDateFormat:@"'Last Updated:' HH:mm:ss"];
-        
         // Worlds - Init
         WorldNamesJSONParser *wnjp = [[WorldNamesJSONParser alloc] initFromURL];
         self._worldNames = wnjp._worldNames;
@@ -214,11 +210,6 @@
             [eg printDetails];
         }
     }
-    
-    // Update date
-    NSDate *date = [NSDate date];
-    NSString *formattedDateString = [self._lastUpdatedFormatter stringFromDate:date];
-    [self._updateText setStringValue:formattedDateString];
     
     // Reload view
     [self._statusTable reloadData];
