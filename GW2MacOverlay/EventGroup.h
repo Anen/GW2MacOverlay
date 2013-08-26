@@ -7,8 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import <Foundation/Foundation.h>
 #import "Event.h"
 
 @interface EventGroup : NSObject

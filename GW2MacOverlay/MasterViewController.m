@@ -8,9 +8,6 @@
 
 #import "MasterViewController.h"
 #import "Event.h"
-#import "World.h"
-#import "WorldNamesJSONParser.h"
-#import "EventsJSONParser.h"
 #import "EventGroup.h"
 
 @interface MasterViewController ()
@@ -23,16 +20,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // INITIALIZATION
-        // Worlds - Init
-        WorldNamesJSONParser *wnjp = [[WorldNamesJSONParser alloc] initFromURL];
-        self._worldNames = wnjp._worldNames;
-        
-        // Worlds - Sort
-        NSSortDescriptor *sortDescriptor;
-        sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"_name" ascending:YES];
-        NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-        self._worldNames = [self._worldNames sortedArrayUsingDescriptors:sortDescriptors];
-        
         // Events Parser
         self._ejp = [EventsJSONParser alloc];
         
@@ -167,65 +154,30 @@
                              egBalthazar, egLyssa, egDwayna, egGrenth, egMelandru,
                              egFrozenMaw, egFoulbear, egUlgoth, egDredge, egTaidha, egFireShaman, egEye,
                              egKarka, nil];
+        
+        [self sortEvents];
     }
     
     return self;
 }
 
-- (void) createGUI{
-    // World Selection
-    NSMenu *menu = [[NSMenu alloc] init];
-    for(World *w in self._worldNames){
-        NSMenuItem *menuItem = [[NSMenuItem alloc] init];
-        [menuItem setTag:w._id];
-        [menuItem setTitle:w._name];
-        [menu addItem:menuItem];
-    }
-    [self._worldSelection setMenu:menu];
-    
-    // Worlds - Selected
-    //NSInteger worldInit = [[self._worldNamesEU objectAtIndex:0] _id];
-    NSInteger worldInit = 2104;
-    self._selectedWorldId = worldInit;
-    [self._worldSelection selectItemWithTag:worldInit];
-    
-    // Events and date
-    [self updateEvents];
-}
-
-
 - (void) updateEvents{
-    // Update events and activity
+    // Update events
     [self._ejp updateFromURL:self._selectedWorldId andEventGroups:self._eventGroups];
     
     // Sort events
-    NSSortDescriptor *sortActive = [NSSortDescriptor sortDescriptorWithKey:@"_isActive" ascending:NO selector:@selector(compare:)];
-    NSSortDescriptor *sortName = [NSSortDescriptor sortDescriptorWithKey:@"_name" ascending:YES selector:@selector(compare:)];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortActive, sortName, nil];
-    self._eventGroups = [self._eventGroups sortedArrayUsingDescriptors:sortDescriptors];
-    
-    //
-    for(EventGroup *eg in self._eventGroups){
-        if (eg._isActive) {
-            [eg printDetails];
-        }
-    }
+    [self sortEvents];
     
     // Reload view
     [self._statusTable reloadData];
 }
 
-/**********/
-/* POP UP */
-/**********/
-
--(IBAction)worldSelected:(id)sender{
-    NSPopUpButton *btn = (NSPopUpButton*)sender;
-    self._selectedWorldId = [[btn selectedItem] tag];
-    NSLog(@"Pop Up");
-    [self updateEvents];
+- (void) sortEvents{
+    NSSortDescriptor *sortActive = [NSSortDescriptor sortDescriptorWithKey:@"_isActive" ascending:NO selector:@selector(compare:)];
+    NSSortDescriptor *sortName = [NSSortDescriptor sortDescriptorWithKey:@"_name" ascending:YES selector:@selector(compare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortActive, sortName, nil];
+    self._eventGroups = [self._eventGroups sortedArrayUsingDescriptors:sortDescriptors];
 }
-
 
 /*********/
 /* TABLE */

@@ -14,7 +14,7 @@
 @synthesize _name; // Generates getter and setter
 
 -(void) print{
-    NSLog(@"World %ld is %s\n", _id, [_name UTF8String] );
+    NSLog(@"World %ld is %@\n", _id, _name );
 }
 
 -(World*) initWithId:(NSInteger)id andName:(NSString *)name{

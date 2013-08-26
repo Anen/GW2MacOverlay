@@ -10,7 +10,8 @@
 
 @interface WorldNamesJSONParser : NSObject
 
-@property NSMutableArray *_worldNames;
+@property NSArray *_worldNamesEU;
+@property NSArray *_worldNamesNA;
 
 -(WorldNamesJSONParser*) initFromURL;
 

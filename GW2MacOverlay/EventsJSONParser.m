@@ -44,7 +44,6 @@
     } else {
         NSLog(@"Error connecting to events API");
     }
-    
 }
 
 @end

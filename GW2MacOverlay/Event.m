@@ -16,7 +16,7 @@
 @synthesize _world_id;
 
 -(void) print{
-    NSLog(@"Event %s is %s. %s\n", [_id UTF8String], [_name UTF8String], [_status UTF8String] );
+    NSLog(@"Event %@ is %@. %@\n", _id, _name, _status );
 }
 
 -(Event*) initWithId:(NSString*)id andName:(NSString *)name{

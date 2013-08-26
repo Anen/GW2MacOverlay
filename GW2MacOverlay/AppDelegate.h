@@ -10,6 +10,10 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+@property NSMenuItem *_currentWorld;
+
 @property (assign) IBOutlet NSWindow *window;
+
+-(IBAction)setWorld:(id)sender;
 
 @end

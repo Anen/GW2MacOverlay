@@ -8,12 +8,10 @@
 
 #import "EventGroup.h"
 
-#import "EventGroup.h"
-
 @implementation EventGroup
 
 -(void) printSummary{
-    NSLog(@"Event group: %s. Size: %ld. IsActive: %hhd.", [self._name UTF8String], [self._listOfEvents count], [self isActive]);
+    NSLog(@"Event group: %@. Size: %ld. IsActive: %hhd.", self._name, [self._listOfEvents count], [self isActive]);
 }
 
 -(void) printDetails{

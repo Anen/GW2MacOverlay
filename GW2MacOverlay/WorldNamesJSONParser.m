@@ -11,8 +11,6 @@
 
 @implementation WorldNamesJSONParser
 
-@synthesize _worldNames;
-
 -(WorldNamesJSONParser*) initFromURL{
     
     self = [super init];
@@ -29,23 +27,31 @@
             if (error) {
                 NSLog(@"Error parsing JSON: %@", error);
             } else {
-                self._worldNames = [[NSMutableArray alloc] init];
+                NSMutableArray *worldEU = [[NSMutableArray alloc] init];
+                NSMutableArray *worldNA = [[NSMutableArray alloc] init];
                 
+                // Fill
                 for(NSDictionary *item in worldNamesJSON) {
                     
                     NSInteger tmpId = [[item objectForKey:@"id"] integerValue];
-                    NSString *tmpName;
-                    
-                    if (tmpId/1000==1) {
-                        tmpName = [NSString stringWithFormat:@"NA - %@",[item objectForKey:@"name"]];
-                    }else{
-                        tmpName = [NSString stringWithFormat:@"EU - %@",[item objectForKey:@"name"]];
-                    }
+                    NSString *tmpName = [NSString stringWithFormat:@"%@", [item objectForKey:@"name"]];
                     
                     World *tmpWorld = [[World alloc] initWithId:tmpId andName: tmpName];
-                    [self._worldNames addObject:tmpWorld];
                     
+                    if (tmpId/1000==1) {
+                        [worldNA addObject:tmpWorld];
+                    }else{
+                        [worldEU addObject:tmpWorld];
+                    }
                 }
+                
+                // Sort
+                NSSortDescriptor *sortName = [NSSortDescriptor sortDescriptorWithKey:@"_name" ascending:YES selector:@selector(compare:)];
+                NSArray *sortDescriptors = [NSArray arrayWithObject:sortName];
+                self._worldNamesEU = [[NSArray alloc] init];
+                self._worldNamesNA = [[NSArray alloc] init];
+                self._worldNamesEU = [worldEU sortedArrayUsingDescriptors:sortDescriptors];
+                self._worldNamesNA = [worldNA sortedArrayUsingDescriptors:sortDescriptors];
             }
             
         } else {
