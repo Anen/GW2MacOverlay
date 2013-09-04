@@ -18,6 +18,6 @@
 -(void) printSummary;
 -(void) printDetails;
 -(EventGroup*) initWithName: (NSString*)name andObjects:(Event*)firstEvent, ... NS_REQUIRES_NIL_TERMINATION;
--(BOOL) isActive;
+-(void) updateActive;
 
 @end

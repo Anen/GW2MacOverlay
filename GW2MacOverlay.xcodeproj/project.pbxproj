@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BDE215517D413430042D2CF /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BDE215317D413430042D2CF /* EventViewController.m */; };
+		0BDE215617D413430042D2CF /* EventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BDE215417D413430042D2CF /* EventViewController.xib */; };
 		0BF8326117C2E40400414C78 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF8326017C2E40400414C78 /* Cocoa.framework */; };
 		0BF8326B17C2E40400414C78 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0BF8326917C2E40400414C78 /* InfoPlist.strings */; };
 		0BF8326D17C2E40400414C78 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BF8326C17C2E40400414C78 /* main.m */; };
@@ -37,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0BDE215217D413430042D2CF /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
+		0BDE215317D413430042D2CF /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
+		0BDE215417D413430042D2CF /* EventViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventViewController.xib; sourceTree = "<group>"; };
 		0BF8325D17C2E40400414C78 /* GW2MacOverlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GW2MacOverlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BF8326017C2E40400414C78 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0BF8326317C2E40400414C78 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -92,6 +97,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0BD4C4BE17D6B83B00ECE86E /* Parser */ = {
+			isa = PBXGroup;
+			children = (
+				0BF832A417C2E4D100414C78 /* WorldNamesJSONParser.h */,
+				0BF832A517C2E4D100414C78 /* WorldNamesJSONParser.m */,
+				0BF832A717C2E4E300414C78 /* EventsJSONParser.h */,
+				0BF832A817C2E4E300414C78 /* EventsJSONParser.m */,
+			);
+			name = Parser;
+			sourceTree = "<group>";
+		};
 		0BF8325417C2E40400414C78 = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				0BF8329517C2E42400414C78 /* Model */,
+				0BD4C4BE17D6B83B00ECE86E /* Parser */,
 				0BF8329417C2E41E00414C78 /* GUI */,
 				0BF8326717C2E40400414C78 /* Supporting Files */,
 			);
@@ -181,6 +198,9 @@
 				0BF8329617C2E48B00414C78 /* MasterViewController.h */,
 				0BF8329717C2E48B00414C78 /* MasterViewController.m */,
 				0BF8329817C2E48B00414C78 /* MasterViewController.xib */,
+				0BDE215217D413430042D2CF /* EventViewController.h */,
+				0BDE215317D413430042D2CF /* EventViewController.m */,
+				0BDE215417D413430042D2CF /* EventViewController.xib */,
 			);
 			name = GUI;
 			sourceTree = "<group>";
@@ -194,10 +214,6 @@
 				0BF8329F17C2E4AF00414C78 /* World.m */,
 				0BF832A117C2E4B900414C78 /* EventGroup.h */,
 				0BF832A217C2E4B900414C78 /* EventGroup.m */,
-				0BF832A417C2E4D100414C78 /* WorldNamesJSONParser.h */,
-				0BF832A517C2E4D100414C78 /* WorldNamesJSONParser.m */,
-				0BF832A717C2E4E300414C78 /* EventsJSONParser.h */,
-				0BF832A817C2E4E300414C78 /* EventsJSONParser.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -277,6 +293,7 @@
 				0BF8327117C2E40400414C78 /* Credits.rtf in Resources */,
 				0BF8327717C2E40400414C78 /* MainMenu.xib in Resources */,
 				0BF8329A17C2E48B00414C78 /* MasterViewController.xib in Resources */,
+				0BDE215617D413430042D2CF /* EventViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +336,7 @@
 				0BF832A317C2E4B900414C78 /* EventGroup.m in Sources */,
 				0BF832A617C2E4D100414C78 /* WorldNamesJSONParser.m in Sources */,
 				0BF832A917C2E4E300414C78 /* EventsJSONParser.m in Sources */,
+				0BDE215517D413430042D2CF /* EventViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,6 +526,7 @@
 				0BF8329017C2E40400414C78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0BF8329117C2E40400414C78 /* Build configuration list for PBXNativeTarget "GW2MacOverlayTests" */ = {
 			isa = XCConfigurationList;
@@ -516,6 +535,7 @@
 				0BF8329317C2E40400414C78 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

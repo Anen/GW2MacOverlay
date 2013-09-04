@@ -11,14 +11,16 @@
 
 @interface MasterViewController : NSViewController
 
-@property NSArray *_eventGroups;
-
-@property EventsJSONParser *_ejp;
+@property BOOL _isDingDong;
 @property NSInteger _selectedWorldId;
+@property EventsJSONParser *_ejp;
+
+@property NSArray *_eventGroups;
 
 @property IBOutlet NSTableView *_statusTable;
 
--(void) updateEvents;
--(void) sortEvents;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evg;
+- (void)updateMasterView;
 
 @end

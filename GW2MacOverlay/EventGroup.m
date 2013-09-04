@@ -11,7 +11,7 @@
 @implementation EventGroup
 
 -(void) printSummary{
-    NSLog(@"Event group: %@. Size: %ld. IsActive: %hhd.", self._name, [self._listOfEvents count], [self isActive]);
+    NSLog(@"Event group: %@. Size: %ld. IsActive: %hhd.", self._name, [self._listOfEvents count], self._isActive);
 }
 
 -(void) printDetails{
@@ -36,13 +36,13 @@
         }
         va_end(args);
         
-        self._isActive = [self isActive];
+        [self updateActive];
     }
     
     return self;
 }
 
--(BOOL) isActive{
+-(void) updateActive{
     BOOL n = NO;
     
     for(Event *e in self._listOfEvents){
@@ -51,7 +51,7 @@
         }
     }
     
-    return n;
+    self._isActive = n;
 }
 
 @end

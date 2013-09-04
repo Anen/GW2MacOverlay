@@ -10,10 +10,24 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
+@property NSMenuItem *_currentMode;
 @property NSMenuItem *_currentWorld;
+@property NSMenuItem *_currentContinent;
+@property NSMenuItem *_currentEvent;
+
+@property NSArray *_worldNamesEU;
+@property NSArray *_worldNamesNA;
+@property NSArray *_eventGroups;
 
 @property (assign) IBOutlet NSWindow *window;
 
+-(void)initData;
+-(void)updateData:(NSTimer*)theTimer;
+-(void)createMenu;
+
+-(IBAction)setMode:(id)sender;
 -(IBAction)setWorld:(id)sender;
+-(IBAction)setContinent:(id)sender;
+-(IBAction)setEvent:(id)sender;
 
 @end

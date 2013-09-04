@@ -12,7 +12,7 @@
 
 @implementation EventsJSONParser
 
--(void) updateFromURL:(NSInteger)worldId andEventGroups:(NSArray *)eventGroups{
+- (void)updateByWorld:(NSInteger)worldId andEventGroups:(NSArray *)eventGroups{
     NSString *url = [NSString stringWithFormat:@"https://api.guildwars2.com/v1/events.json?world_id=%ld", worldId];
     
     NSLog(@"%@",url);
@@ -37,13 +37,42 @@
             }
             
             for(EventGroup *eg in eventGroups){
-                eg._isActive = [eg isActive];
+                [eg updateActive];
             }
             
         }
     } else {
         NSLog(@"Error connecting to events API");
     }
+}
+
+- (NSMutableArray*)updateByEvent:(NSString*)eventId{
+    NSMutableArray *listOfActiveWorld = [[NSMutableArray alloc] init];
+    
+    NSString *url = [NSString stringWithFormat:@"https://api.guildwars2.com/v1/events.json?event_id=%@", eventId];
+    
+    NSLog(@"%@",url);
+    
+    NSURL *eventsURL = [NSURL URLWithString:url];
+    NSData *eventsData = [[NSData alloc] initWithContentsOfURL:eventsURL];
+    if (eventsData) {
+        NSError *error = nil;
+        NSDictionary *eventsJSON = [NSJSONSerialization JSONObjectWithData:eventsData options:0 error:&error];
+        
+        if (error) {
+            NSLog(@"Error parsing JSON: %@", error);
+        } else {
+            for(NSDictionary *item in [eventsJSON objectForKey:@"events"]) {
+                if([[item objectForKey:@"state"] isEqualToString:@"Active"]){
+                    [listOfActiveWorld addObject:[item objectForKey:@"world_id"]];
+                }
+            }            
+        }
+    } else {
+        NSLog(@"Error connecting to events API");
+    }
+
+    return listOfActiveWorld;
 }
 
 @end

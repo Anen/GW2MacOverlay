@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EventGroup.h"
 
 @interface EventsJSONParser : NSObject
 
--(void) updateFromURL:(NSInteger)worldId andEventGroups:(NSArray*)eventGroups;
+- (void)updateByWorld:(NSInteger)worldId andEventGroups:(NSArray*)eventGroups;
+- (NSMutableArray*)updateByEvent:(NSString*)eventId;
+
 
 @end
