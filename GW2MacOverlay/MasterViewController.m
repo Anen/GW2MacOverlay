@@ -73,18 +73,12 @@
     }*/
     
     if ([tableColumn.identifier isEqualToString:@"eventColumn"]) {
-        cellView.textField.stringValue = eg._name;
-        return cellView;
-    }
-    
-    if ([tableColumn.identifier isEqualToString:@"statusColumn"]) {
-        NSFont* boldFont = [NSFont boldSystemFontOfSize:[NSFont systemFontSize]];
-        [cellView.textField setFont:boldFont];
         if (eg._isActive) {
-            cellView.textField.stringValue = @"Active";
+            [cellView.textField setTextColor:[NSColor blackColor]];
         } else {
-            cellView.textField.stringValue = @"--";
+            [cellView.textField setTextColor:[NSColor whiteColor]];
         }
+        cellView.textField.stringValue = eg._name;
         return cellView;
     }
     

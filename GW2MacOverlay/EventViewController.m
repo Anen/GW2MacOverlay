@@ -51,7 +51,8 @@
     
     // Sort worlds
     NSSortDescriptor *sortActive = [NSSortDescriptor sortDescriptorWithKey:@"_eventActive" ascending:NO selector:@selector(compare:)];
-    NSArray *sortDescriptors = [NSArray arrayWithObject:sortActive];
+    NSSortDescriptor *sortName = [NSSortDescriptor sortDescriptorWithKey:@"_name" ascending:YES selector:@selector(compare:)];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:sortActive, sortName, nil];
     self._listOfWorlds = [self._listOfWorlds sortedArrayUsingDescriptors:sortDescriptors];
     
     // Reload view
@@ -74,18 +75,12 @@
     
     //Multicolumn
     if ([tableColumn.identifier isEqualToString:@"worldColumn"]) {
-        cellView.textField.stringValue = w._name;
-        return cellView;
-    }
-    
-    if ([tableColumn.identifier isEqualToString:@"statusColumn"]) {
-        NSFont* boldFont = [NSFont boldSystemFontOfSize:[NSFont systemFontSize]];
-        [cellView.textField setFont:boldFont];
         if (w._eventActive) {
-            cellView.textField.stringValue = @"Active";
+            [cellView.textField setTextColor:[NSColor blackColor]];
         } else {
-            cellView.textField.stringValue = @"--";
+            [cellView.textField setTextColor:[NSColor whiteColor]];
         }
+        cellView.textField.stringValue = w._name;
         return cellView;
     }
     

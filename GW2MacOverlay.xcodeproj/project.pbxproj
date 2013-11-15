@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0BAA0C4A1800C61400AAEFDC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0BAA0C491800C61400AAEFDC /* Images.xcassets */; };
 		0BDE215517D413430042D2CF /* EventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BDE215317D413430042D2CF /* EventViewController.m */; };
 		0BDE215617D413430042D2CF /* EventViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0BDE215417D413430042D2CF /* EventViewController.xib */; };
 		0BF8326117C2E40400414C78 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BF8326017C2E40400414C78 /* Cocoa.framework */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0BAA0C491800C61400AAEFDC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0BDE215217D413430042D2CF /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
 		0BDE215317D413430042D2CF /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
 		0BDE215417D413430042D2CF /* EventViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventViewController.xib; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				0BF8329517C2E42400414C78 /* Model */,
 				0BD4C4BE17D6B83B00ECE86E /* Parser */,
 				0BF8329417C2E41E00414C78 /* GUI */,
+				0BAA0C491800C61400AAEFDC /* Images.xcassets */,
 				0BF8326717C2E40400414C78 /* Supporting Files */,
 			);
 			path = GW2MacOverlay;
@@ -263,7 +266,7 @@
 		0BF8325517C2E40400414C78 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Bastien;
 			};
 			buildConfigurationList = 0BF8325817C2E40400414C78 /* Build configuration list for PBXProject "GW2MacOverlay" */;
@@ -292,6 +295,7 @@
 				0BF8326B17C2E40400414C78 /* InfoPlist.strings in Resources */,
 				0BF8327117C2E40400414C78 /* Credits.rtf in Resources */,
 				0BF8327717C2E40400414C78 /* MainMenu.xib in Resources */,
+				0BAA0C4A1800C61400AAEFDC /* Images.xcassets in Resources */,
 				0BF8329A17C2E48B00414C78 /* MasterViewController.xib in Resources */,
 				0BDE215617D413430042D2CF /* EventViewController.xib in Resources */,
 			);
@@ -398,7 +402,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -431,7 +434,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -460,6 +462,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GW2MacOverlay/GW2MacOverlay-Prefix.pch";
 				INFOPLIST_FILE = "GW2MacOverlay/GW2MacOverlay-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -472,6 +475,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GW2MacOverlay/GW2MacOverlay-Prefix.pch";
 				INFOPLIST_FILE = "GW2MacOverlay/GW2MacOverlay-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
