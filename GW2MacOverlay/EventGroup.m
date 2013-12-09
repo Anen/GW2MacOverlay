@@ -21,14 +21,15 @@
     }
 }
 
--(EventGroup*) initWithName:(NSString *)name andObjects:(Event *)firstEvent, ...{
+-(EventGroup*) initWithName:(NSString *)name andWaypoint:(NSString*)waypoint andObjects:(Event *)firstEvent, ...{
     
     self = [super init];
     
     if (self) {
         self._name = name;
-        self._listOfEvents = [[NSMutableArray alloc] init];
+        self._waypoint = waypoint;
         
+        self._listOfEvents = [[NSMutableArray alloc] init];
         va_list args;
         va_start(args, firstEvent);
         for (Event *arg = firstEvent; arg != nil; arg = va_arg(args, Event*)){

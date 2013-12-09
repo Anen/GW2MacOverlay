@@ -38,7 +38,7 @@
                     
                     World *tmpWorld = [[World alloc] initWithId:tmpId andName: tmpName];
                     
-                    if (tmpId/1000==1) {
+                    if (tmpId/1000 == 1) {
                         [worldNA addObject:tmpWorld];
                     }else{
                         [worldEU addObject:tmpWorld];

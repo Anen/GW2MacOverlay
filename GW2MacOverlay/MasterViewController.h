@@ -11,7 +11,7 @@
 
 @interface MasterViewController : NSViewController
 
-@property BOOL _isDingDong;
+@property NSInteger _linkWaypoint;
 @property NSInteger _selectedWorldId;
 @property EventsJSONParser *_ejp;
 

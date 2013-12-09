@@ -23,9 +23,6 @@
         
         // EventGroup
         self._eventGroups = evg;
-        
-        // Ding Dong
-        self._isDingDong = NO;
     }
     
     return self;
@@ -49,6 +46,12 @@
 /*********/
 /* TABLE */
 /*********/
+
+-(void) awakeFromNib {
+    NSLog(@"awakeFromNib");
+    [self._statusTable setAction:@selector(doClick:)];
+    [self._statusTable setTarget:self];
+}
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
@@ -83,6 +86,35 @@
     }
     
     return cellView;
+}
+
+- (void)doClick:(id)sender {
+    // Get EventGroup
+    EventGroup *eg = [self._eventGroups objectAtIndex:[sender clickedRow]];
+    
+    NSLog(@"Click %@", eg._name );
+    
+    if (self._linkWaypoint != 0) {
+        NSMutableString* cmd = [NSMutableString new];
+        [cmd appendString:@"tell application \"System Events\" to keystroke return\n"];
+        [cmd appendString:@"delay 0.1\n"];
+        
+        if (self._linkWaypoint == 1) {
+            [cmd appendString:@"tell application \"System Events\" to keystroke \"/g "];
+        } else if (self._linkWaypoint == 2) {
+            [cmd appendString:@"tell application \"System Events\" to keystroke \"/s "];
+        }
+        
+        [cmd appendString:eg._name];
+        [cmd appendString:@" "];
+        [cmd appendString:eg._waypoint];
+        [cmd appendString:@"\" & return\n"];
+        //[cmd appendString:@"delay 2\n"];
+        //[cmd appendString:@"tell application \"System Events\" to keystroke return\n"];
+        NSAppleScript* script = [[NSAppleScript alloc] initWithSource:cmd];
+        NSDictionary* err = nil;
+        NSAppleEventDescriptor *result = [script executeAndReturnError:&err];
+    }
 }
 
 
