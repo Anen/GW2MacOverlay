@@ -15,11 +15,18 @@
 @property NSMenuItem *_currentContinent;
 @property NSMenuItem *_currentEvent;
 
+// Serial
+@property NSInteger _serialMode;
+@property NSInteger _serialWorld;
+
 @property NSArray *_worldNamesEU;
 @property NSArray *_worldNamesNA;
 @property NSArray *_eventGroups;
 
 @property (assign) IBOutlet NSWindow *window;
+
+-(void)writeToFile;
+-(void)readFromFile;
 
 -(void)initData;
 -(void)updateData:(NSTimer*)theTimer;

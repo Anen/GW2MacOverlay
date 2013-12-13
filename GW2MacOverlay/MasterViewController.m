@@ -48,7 +48,7 @@
 /*********/
 
 -(void) awakeFromNib {
-    NSLog(@"awakeFromNib");
+    //NSLog(@"awakeFromNib");
     [self._statusTable setAction:@selector(doClick:)];
     [self._statusTable setTarget:self];
 }
@@ -89,12 +89,14 @@
 }
 
 - (void)doClick:(id)sender {
-    // Get EventGroup
-    EventGroup *eg = [self._eventGroups objectAtIndex:[sender clickedRow]];
+    NSInteger clickedRow = [sender clickedRow];
+    NSLog(@"Click %ld", (long)clickedRow );
     
-    NSLog(@"Click %@", eg._name );
-    
-    if (self._linkWaypoint != 0) {
+    if (clickedRow >= 0 && self._linkWaypoint != 0) { // Click on header returns -1
+        
+        // Get EventGroup
+        EventGroup *eg = [self._eventGroups objectAtIndex:clickedRow];
+        
         NSMutableString* cmd = [NSMutableString new];
         [cmd appendString:@"tell application \"System Events\" to keystroke return\n"];
         [cmd appendString:@"delay 0.1\n"];
@@ -109,8 +111,7 @@
         [cmd appendString:@" "];
         [cmd appendString:eg._waypoint];
         [cmd appendString:@"\" & return\n"];
-        //[cmd appendString:@"delay 2\n"];
-        //[cmd appendString:@"tell application \"System Events\" to keystroke return\n"];
+
         NSAppleScript* script = [[NSAppleScript alloc] initWithSource:cmd];
         NSDictionary* err = nil;
         NSAppleEventDescriptor *result = [script executeAndReturnError:&err];

@@ -26,6 +26,9 @@
     // Launch GW2
     //[[NSWorkspace sharedWorkspace] launchApplication: @"Guild Wars 2"];
     
+    // Unserialize data
+    [self readFromFile];
+    
     // DATA
     [self initData];
     
@@ -35,6 +38,17 @@
     // INIT VIEWS
     self.masterViewController = [[MasterViewController alloc] initWithNibName:@"MasterViewController" bundle:nil andEventGroup:self._eventGroups];
     self.eventViewController = [[EventViewController alloc] initWithNibName:@"EventViewController" bundle:nil andListOfWorlds:self._worldNamesEU];
+    
+    
+    if (self._serialWorld) {
+        // Insert master view (default)
+        [self.window.contentView addSubview:self.masterViewController.view];
+        self.masterViewController.view.frame = ((NSView*)self.window.contentView).bounds;
+        
+        // Update UI
+        self.masterViewController._selectedWorldId = [self._currentWorld tag];
+        [self.masterViewController updateMasterView];
+    }
     
     // WINDOW
     // Always on top + opacity
@@ -51,9 +65,42 @@
 
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+    
+    // Serialize
+    [self writeToFile];
+    
     return YES;
 }
 
+/*****************/
+/* SERIALIZATION */
+/*****************/
+
+-(void)writeToFile{
+    NSLog(@"Writing to file.");
+    
+    NSMutableDictionary *rootObj = [NSMutableDictionary dictionaryWithCapacity:2];
+    
+    [rootObj setObject:[NSNumber numberWithInteger:[self._currentMode tag]] forKey:@"idMode"];
+    [rootObj setObject:[NSNumber numberWithInteger:[self._currentWorld tag]] forKey:@"idWorld"];
+    
+    NSString *path = @"GW2MacOverlay.xml";
+
+    NSLog(@"Writing %@", rootObj);
+        
+    [rootObj writeToFile:path atomically:YES];
+}
+
+-(void)readFromFile {
+    
+    NSString *path = @"GW2MacOverlay.xml";
+    
+    NSDictionary *theDict = [NSDictionary dictionaryWithContentsOfFile:path];
+    NSLog(@"Reading %@", theDict);
+        
+    self._serialMode = [[theDict objectForKey:@"idMode"] integerValue];
+    self._serialWorld = [[theDict objectForKey:@"idWorld"] integerValue];
+}
 
 /********/
 /* DATA */
@@ -248,7 +295,12 @@
     [[NSApp mainMenu] addItem: modeMenuItem];
     
     // Initialization
-    self._currentMode = normalModeItem;
+    self._currentMode = normalModeItem; // Default
+    if (self._serialMode == 1) {
+        self._currentMode = waypointGuildModeItem;
+    } else if (self._serialMode == 2) {
+        self._currentMode = waypointSayModeItem;
+    }
     [self._currentMode setState:NSOnState];
     
     // MENU WORLD
@@ -259,12 +311,26 @@
         NSMenuItem *tmpItem = [[NSMenuItem alloc] initWithTitle:w._name action:@selector(setWorld:) keyEquivalent:@""];
         [tmpItem setTag:w._id];
         [EUWorldMenu addItem:tmpItem];
+        
+        // Init?
+        if (w._id == self._serialWorld) {
+            self._currentWorld = tmpItem;
+            [self._currentWorld setState:NSOnState];
+            [self.window setTitle:[self._currentWorld title]];
+        }
     }
     
     for(World *w in self._worldNamesNA){
         NSMenuItem *tmpItem = [[NSMenuItem alloc] initWithTitle:w._name action:@selector(setWorld:) keyEquivalent:@""];
         [tmpItem setTag:w._id];
         [NAWorldMenu addItem:tmpItem];
+        
+        // Init?
+        if (w._id == self._serialWorld) {
+            self._currentWorld = tmpItem;
+            [self._currentWorld setState:NSOnState];
+            [self.window setTitle:[self._currentWorld title]];
+        }
     }
     
     NSMenuItem *EUMenuItem = [[NSMenuItem alloc] init];
