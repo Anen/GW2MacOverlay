@@ -18,6 +18,7 @@
 // Serial
 @property NSInteger _serialMode;
 @property NSInteger _serialWorld;
+@property NSString *_serialPath;
 
 @property NSArray *_worldNamesEU;
 @property NSArray *_worldNamesNA;

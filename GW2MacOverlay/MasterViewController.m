@@ -114,7 +114,7 @@
 
         NSAppleScript* script = [[NSAppleScript alloc] initWithSource:cmd];
         NSDictionary* err = nil;
-        NSAppleEventDescriptor *result = [script executeAndReturnError:&err];
+        /*NSAppleEventDescriptor *result = */[script executeAndReturnError:&err];
     }
 }
 

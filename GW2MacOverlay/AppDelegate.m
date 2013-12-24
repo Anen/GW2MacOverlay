@@ -27,6 +27,7 @@
     //[[NSWorkspace sharedWorkspace] launchApplication: @"Guild Wars 2"];
     
     // Unserialize data
+    self._serialPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/GW2MacOverlay.xml"];
     [self readFromFile];
     
     // DATA
@@ -53,7 +54,8 @@
     // WINDOW
     // Always on top + opacity
     [self.window setLevel:CGShieldingWindowLevel() + 1];
-    [self.window setAlphaValue:0.95f];
+    [self.window setAlphaValue:0.9f];
+    //[self.window setStyleMask:NSClosableWindowMask];
     
     // TIMER
     [NSTimer scheduledTimerWithTimeInterval:10.0f
@@ -63,12 +65,15 @@
                                         repeats:YES];
 }
 
-
-- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)theApplication {
     
     // Serialize
     [self writeToFile];
     
+    return NSTerminateNow;
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)theApplication {
     return YES;
 }
 
@@ -77,26 +82,21 @@
 /*****************/
 
 -(void)writeToFile{
-    NSLog(@"Writing to file.");
     
     NSMutableDictionary *rootObj = [NSMutableDictionary dictionaryWithCapacity:2];
     
     [rootObj setObject:[NSNumber numberWithInteger:[self._currentMode tag]] forKey:@"idMode"];
     [rootObj setObject:[NSNumber numberWithInteger:[self._currentWorld tag]] forKey:@"idWorld"];
-    
-    NSString *path = @"GW2MacOverlay.xml";
 
-    NSLog(@"Writing %@", rootObj);
+    NSLog(@"Writing to %@ %@", self._serialPath, rootObj);
         
-    [rootObj writeToFile:path atomically:YES];
+    [rootObj writeToFile:self._serialPath atomically:YES];
 }
 
 -(void)readFromFile {
     
-    NSString *path = @"GW2MacOverlay.xml";
-    
-    NSDictionary *theDict = [NSDictionary dictionaryWithContentsOfFile:path];
-    NSLog(@"Reading %@", theDict);
+    NSDictionary *theDict = [NSDictionary dictionaryWithContentsOfFile:self._serialPath];
+    NSLog(@"Reading from %@ %@", self._serialPath, theDict);
         
     self._serialMode = [[theDict objectForKey:@"idMode"] integerValue];
     self._serialWorld = [[theDict objectForKey:@"idWorld"] integerValue];
@@ -210,11 +210,11 @@
     EventGroup *egUlgoth = [[EventGroup alloc] initWithName:@"Ulgoth the Modniir" andWaypoint:@"[&BLEAAAA=]" andObjects:evUlgothPre1, evUlgothPre2, evUlgothPre3, evUlgothPre4, evUlgothBoss, nil];
     
     // Dredge Commissar
-    Event *evDredgePre1 = [[Event alloc] initWithId:@"" andName:@""];
-    Event *evDredgePre2 = [[Event alloc] initWithId:@"" andName:@""];
-    Event *evDredgePre3 = [[Event alloc] initWithId:@"" andName:@""];
+    //Event *evDredgePre1 = [[Event alloc] initWithId:@"" andName:@""];
+    //Event *evDredgePre2 = [[Event alloc] initWithId:@"" andName:@""];
+    //Event *evDredgePre3 = [[Event alloc] initWithId:@"" andName:@""];
     Event *evDredgeBoss = [[Event alloc] initWithId:@"95CA969B-0CC6-4604-B166-DBCCE125864F" andName:@"Defeat the dredge commissar."];
-    EventGroup *egDredge = [[EventGroup alloc] initWithName:@"Dredge Commissar" andWaypoint:@"[&BFYCAAA=]" andObjects:evDredgePre1, evDredgePre2, evDredgePre3, evDredgeBoss, nil];
+    EventGroup *egDredge = [[EventGroup alloc] initWithName:@"Dredge Commissar" andWaypoint:@"[&BFYCAAA=]" andObjects:evDredgeBoss, nil];
     
     // Taidha
     Event *evTaidhaPre1 = [[Event alloc] initWithId:@"B6B7EE2A-AD6E-451B-9FE5-D5B0AD125BB2" andName:@"Eliminate the cannons at the northern defensive tower."];
