@@ -14,7 +14,7 @@
 @property NSString *_name;
 @property BOOL _eventActive;
 
--(void) print;
--(World*) initWithId: (NSInteger) id andName: (NSString*) name;
+- (void) print;
+- (World*) initWithId: (NSInteger) id andName: (NSString*) name;
 
 @end

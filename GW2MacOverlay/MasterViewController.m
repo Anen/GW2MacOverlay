@@ -15,28 +15,40 @@
 
 @implementation MasterViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evg{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evgArray{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Events Parser
         self._ejp = [EventsJSONParser alloc];
         
         // EventGroup
-        self._eventGroups = evg;
+        self._eventGroups = evgArray;
+        
+        // EventGroupToDisplay
+        self._eventGroupsToDisplay = [[NSMutableArray alloc] init];
     }
     
     return self;
 }
 
 - (void)updateMasterView{
-    // Update events
-    [self._ejp updateByWorld:self._selectedWorldId andEventGroups:self._eventGroups];
+    
+    // Update display
+    [self._eventGroupsToDisplay removeAllObjects];
+    for (EventGroup *evg in self._eventGroups) {
+        if (evg._toDisplay) {
+            [self._eventGroupsToDisplay addObject:evg];
+        }
+    }
+    
+    // Update parser
+    [self._ejp updateByWorld:self._selectedWorldId andEventGroups:self._eventGroupsToDisplay];
     
     // Sort events
     NSSortDescriptor *sortActive = [NSSortDescriptor sortDescriptorWithKey:@"_isActive" ascending:NO selector:@selector(compare:)];
     NSSortDescriptor *sortName = [NSSortDescriptor sortDescriptorWithKey:@"_name" ascending:YES selector:@selector(compare:)];
     NSArray *sortDescriptors = [NSArray arrayWithObjects:sortActive, sortName, nil];
-    self._eventGroups = [self._eventGroups sortedArrayUsingDescriptors:sortDescriptors];
+    [self._eventGroupsToDisplay sortUsingDescriptors:sortDescriptors];
     
     // Reload view
     [self._statusTable reloadData];
@@ -55,13 +67,13 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
-    [tableView setBackgroundColor:[NSColor lightGrayColor]];
+    [tableView setBackgroundColor:self._backgroundColor];
     
     // Get a new ViewCell
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
     
     // Get EventGroup
-    EventGroup *eg = [self._eventGroups objectAtIndex:row];
+    EventGroup *eg = [self._eventGroupsToDisplay objectAtIndex:row];
     
     //Multicolumn
     /*if ([tableColumn.identifier isEqualToString:@"checkColumn"]) {
@@ -77,9 +89,9 @@
     
     if ([tableColumn.identifier isEqualToString:@"eventColumn"]) {
         if (eg._isActive) {
-            [cellView.textField setTextColor:[NSColor blackColor]];
+            [cellView.textField setTextColor:self._activeColor];
         } else {
-            [cellView.textField setTextColor:[NSColor whiteColor]];
+            [cellView.textField setTextColor:self._inactiveColor];
         }
         cellView.textField.stringValue = eg._name;
         return cellView;
@@ -92,35 +104,45 @@
     NSInteger clickedRow = [sender clickedRow];
     NSLog(@"Click %ld", (long)clickedRow );
     
-    if (clickedRow >= 0 && self._linkWaypoint != 0) { // Click on header returns -1
-        
+    if (clickedRow >= 0) { // Click on header returns -1
         // Get EventGroup
         EventGroup *eg = [self._eventGroups objectAtIndex:clickedRow];
         
-        NSMutableString* cmd = [NSMutableString new];
-        [cmd appendString:@"tell application \"System Events\" to keystroke return\n"];
-        [cmd appendString:@"delay 0.1\n"];
-        
-        if (self._linkWaypoint == 1) {
-            [cmd appendString:@"tell application \"System Events\" to keystroke \"/g "];
-        } else if (self._linkWaypoint == 2) {
-            [cmd appendString:@"tell application \"System Events\" to keystroke \"/s "];
+        if (self._linkWaypoint == 1 || self._linkWaypoint == 2) {
+            
+            NSMutableString* cmd = [NSMutableString new];
+            [cmd appendString:@"tell application \"System Events\" to keystroke return\n"];
+            [cmd appendString:@"delay 0.1\n"];
+            
+            if (self._linkWaypoint == 1) {
+                [cmd appendString:@"tell application \"System Events\" to keystroke \"/g "];
+            } else if (self._linkWaypoint == 2) {
+                [cmd appendString:@"tell application \"System Events\" to keystroke \"/s "];
+            }
+            
+            [cmd appendString:eg._name];
+            [cmd appendString:@" "];
+            [cmd appendString:eg._waypoint];
+            [cmd appendString:@"\" & return\n"];
+            
+            NSAppleScript* script = [[NSAppleScript alloc] initWithSource:cmd];
+            NSDictionary* err = nil;
+            /*NSAppleEventDescriptor *result = */[script executeAndReturnError:&err];
+        } else if (self._linkWaypoint == 3) {
+            NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+            [pasteboard clearContents];
+            NSArray *objectsToCopy = [NSArray arrayWithObjects:eg._name, @" ", eg._waypoint, nil];
+            [pasteboard writeObjects:objectsToCopy];
+            
+            NSLog(@"PASTED");
         }
         
-        [cmd appendString:eg._name];
-        [cmd appendString:@" "];
-        [cmd appendString:eg._waypoint];
-        [cmd appendString:@"\" & return\n"];
-
-        NSAppleScript* script = [[NSAppleScript alloc] initWithSource:cmd];
-        NSDictionary* err = nil;
-        /*NSAppleEventDescriptor *result = */[script executeAndReturnError:&err];
     }
 }
 
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
-    return [self._eventGroups count];
+    return [self._eventGroupsToDisplay count];
 }
 
 @end

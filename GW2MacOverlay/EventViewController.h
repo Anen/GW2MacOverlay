@@ -12,14 +12,20 @@
 
 @interface EventViewController : NSViewController
 
-@property EventGroup *_egToDisplay;
+// Data
 @property EventsJSONParser *_ejp;
-
 @property NSArray *_listOfWorlds;
 @property NSMutableSet *_activeWorlds;
 
-@property IBOutlet NSTableView *_statusTable;
+// Menu
+@property EventGroup *_egToDisplay;
 
+// Colors
+@property NSColor *_activeColor;
+@property NSColor *_inactiveColor;
+@property NSColor *_backgroundColor;
+
+@property IBOutlet NSTableView *_statusTable;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andListOfWorlds:(NSArray*)listW;
 - (void)updateEventView;

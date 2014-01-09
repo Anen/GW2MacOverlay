@@ -42,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B1B3507187C986700205E27 /* PreferencePanes.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PreferencePanes.framework; path = System/Library/Frameworks/PreferencePanes.framework; sourceTree = SDKROOT; };
 		0BAA0C491800C61400AAEFDC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		0BDE215217D413430042D2CF /* EventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventViewController.h; sourceTree = "<group>"; };
 		0BDE215317D413430042D2CF /* EventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventViewController.m; sourceTree = "<group>"; };
@@ -103,6 +104,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B1B3506187C969900205E27 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0BF8329617C2E48B00414C78 /* MasterViewController.h */,
+				0BF8329717C2E48B00414C78 /* MasterViewController.m */,
+				0BF8329817C2E48B00414C78 /* MasterViewController.xib */,
+				0BDE215217D413430042D2CF /* EventViewController.h */,
+				0BDE215317D413430042D2CF /* EventViewController.m */,
+				0BDE215417D413430042D2CF /* EventViewController.xib */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		0BD4C4BE17D6B83B00ECE86E /* Parser */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,6 +151,7 @@
 		0BF8325F17C2E40400414C78 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0B1B3507187C986700205E27 /* PreferencePanes.framework */,
 				0BF8326017C2E40400414C78 /* Cocoa.framework */,
 				0BF8327E17C2E40400414C78 /* SenTestingKit.framework */,
 				0BF8326217C2E40400414C78 /* Other Frameworks */,
@@ -161,6 +176,7 @@
 				0BF8329517C2E42400414C78 /* Model */,
 				0BD4C4BE17D6B83B00ECE86E /* Parser */,
 				0BF8329417C2E41E00414C78 /* GUI */,
+				0B1B3506187C969900205E27 /* Views */,
 				0BAA0C491800C61400AAEFDC /* Images.xcassets */,
 				0BF8326717C2E40400414C78 /* Supporting Files */,
 			);
@@ -204,12 +220,6 @@
 				0BF8327217C2E40400414C78 /* AppDelegate.h */,
 				0BF8327317C2E40400414C78 /* AppDelegate.m */,
 				0BF8327517C2E40400414C78 /* MainMenu.xib */,
-				0BF8329617C2E48B00414C78 /* MasterViewController.h */,
-				0BF8329717C2E48B00414C78 /* MasterViewController.m */,
-				0BF8329817C2E48B00414C78 /* MasterViewController.xib */,
-				0BDE215217D413430042D2CF /* EventViewController.h */,
-				0BDE215317D413430042D2CF /* EventViewController.m */,
-				0BDE215417D413430042D2CF /* EventViewController.xib */,
 			);
 			name = GUI;
 			sourceTree = "<group>";
@@ -478,7 +488,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GW2MacOverlay/GW2MacOverlay-Prefix.pch";
 				INFOPLIST_FILE = "GW2MacOverlay/GW2MacOverlay-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -491,7 +501,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GW2MacOverlay/GW2MacOverlay-Prefix.pch";
 				INFOPLIST_FILE = "GW2MacOverlay/GW2MacOverlay-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

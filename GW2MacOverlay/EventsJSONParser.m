@@ -12,7 +12,7 @@
 
 @implementation EventsJSONParser
 
-- (void)updateByWorld:(NSInteger)worldId andEventGroups:(NSArray *)eventGroups{
+- (void) updateByWorld:(NSInteger)worldId andEventGroups:(NSArray*)eventGroups{
     NSString *url = [NSString stringWithFormat:@"https://api.guildwars2.com/v1/events.json?world_id=%ld", worldId];
     
     NSLog(@"%@",url);
@@ -46,7 +46,7 @@
     }
 }
 
-- (NSMutableArray*)updateByEvent:(NSString*)eventId{
+- (NSMutableArray*) updateByEvent:(NSString*)eventId{
     NSMutableArray *listOfActiveWorld = [[NSMutableArray alloc] init];
     
     NSString *url = [NSString stringWithFormat:@"https://api.guildwars2.com/v1/events.json?event_id=%@", eventId];

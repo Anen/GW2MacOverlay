@@ -11,8 +11,7 @@
 
 @interface EventsJSONParser : NSObject
 
-- (void)updateByWorld:(NSInteger)worldId andEventGroups:(NSArray*)eventGroups;
-- (NSMutableArray*)updateByEvent:(NSString*)eventId;
-
+- (void) updateByWorld:(NSInteger)worldId andEventGroups:(NSArray*)eventGroups;
+- (NSMutableArray*) updateByEvent:(NSString*)eventId;
 
 @end

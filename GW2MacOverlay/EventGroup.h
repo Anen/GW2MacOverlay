@@ -14,11 +14,12 @@
 @property NSString *_name;
 @property NSString *_waypoint;
 @property BOOL _isActive;
+@property BOOL _toDisplay;
 @property NSMutableArray *_listOfEvents;
 
--(void) printSummary;
--(void) printDetails;
--(EventGroup*) initWithName:(NSString*)name andWaypoint:(NSString*)waypoint andObjects:(Event*)firstEvent, ... NS_REQUIRES_NIL_TERMINATION;
--(void) updateActive;
+- (void) printSummary;
+- (void) printDetails;
+- (EventGroup*) initWithName:(NSString*)name andWaypoint:(NSString*)waypoint andObjects:(Event*)firstEvent, ... NS_REQUIRES_NIL_TERMINATION;
+- (void) updateActive;
 
 @end

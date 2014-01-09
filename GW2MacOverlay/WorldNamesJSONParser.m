@@ -11,7 +11,7 @@
 
 @implementation WorldNamesJSONParser
 
--(WorldNamesJSONParser*) initFromURL{
+- (WorldNamesJSONParser*) initFromURL{
     
     self = [super init];
     

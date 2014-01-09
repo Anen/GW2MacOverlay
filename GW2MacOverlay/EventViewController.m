@@ -76,9 +76,9 @@
     //Multicolumn
     if ([tableColumn.identifier isEqualToString:@"worldColumn"]) {
         if (w._eventActive) {
-            [cellView.textField setTextColor:[NSColor blackColor]];
+            [cellView.textField setTextColor:self._activeColor];
         } else {
-            [cellView.textField setTextColor:[NSColor whiteColor]];
+            [cellView.textField setTextColor:self._inactiveColor];
         }
         cellView.textField.stringValue = w._name;
         return cellView;

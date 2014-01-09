@@ -13,11 +13,11 @@
 @synthesize _id;
 @synthesize _name; // Generates getter and setter
 
--(void) print{
+- (void) print{
     NSLog(@"World %ld is %@\n", _id, _name );
 }
 
--(World*) initWithId:(NSInteger)id andName:(NSString *)name{
+- (World*) initWithId:(NSInteger)id andName:(NSString *)name{
     self = [super init];
     
     if ( self ) {

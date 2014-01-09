@@ -15,11 +15,11 @@
 @synthesize _status;
 @synthesize _world_id;
 
--(void) print{
+- (void) print{
     NSLog(@"Event %@ is %@. %@\n", _id, _name, _status );
 }
 
--(Event*) initWithId:(NSString*)id andName:(NSString *)name{
+- (Event*) initWithId:(NSString*)id andName:(NSString *)name{
     self = [super init];
     
     if ( self ) {

@@ -13,7 +13,7 @@
 @property NSArray *_worldNamesEU;
 @property NSArray *_worldNamesNA;
 
--(WorldNamesJSONParser*) initFromURL;
+- (WorldNamesJSONParser*) initFromURL;
 
 @end
 

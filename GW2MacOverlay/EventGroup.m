@@ -10,18 +10,18 @@
 
 @implementation EventGroup
 
--(void) printSummary{
+- (void) printSummary{
     NSLog(@"Event group: %@. Size: %ld. IsActive: %hhd.", self._name, [self._listOfEvents count], self._isActive);
 }
 
--(void) printDetails{
+- (void) printDetails{
     [self printSummary];
     for(Event *e in self._listOfEvents){
         [e print];
     }
 }
 
--(EventGroup*) initWithName:(NSString *)name andWaypoint:(NSString*)waypoint andObjects:(Event *)firstEvent, ...{
+- (EventGroup*) initWithName:(NSString *)name andWaypoint:(NSString*)waypoint andObjects:(Event *)firstEvent, ...{
     
     self = [super init];
     
@@ -38,21 +38,23 @@
         va_end(args);
         
         [self updateActive];
+        
+        self._toDisplay = false;
     }
     
     return self;
 }
 
--(void) updateActive{
-    BOOL n = NO;
+- (void) updateActive{
+    BOOL active = false;
     
     for(Event *e in self._listOfEvents){
         if([e._status isEqualToString:@"Active"]){
-            n = YES;
+            active = true;
         }
     }
     
-    self._isActive = n;
+    self._isActive = active;
 }
 
 @end

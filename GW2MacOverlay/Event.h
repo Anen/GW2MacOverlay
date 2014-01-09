@@ -15,7 +15,7 @@
 @property NSString *_status;
 @property NSString *_world_id;
 
--(void) print;
--(Event*) initWithId:(NSString*)id andName:(NSString *)name;
+- (void) print;
+- (Event*) initWithId:(NSString*)id andName:(NSString *)name;
 
 @end
