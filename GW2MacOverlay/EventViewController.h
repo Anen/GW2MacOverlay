@@ -27,7 +27,7 @@
 
 @property IBOutlet NSTableView *_statusTable;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andListOfWorlds:(NSArray*)listW;
-- (void)updateEventView;
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andListOfWorlds:(NSArray*)listW;
+- (void) updateEventView;
 
 @end

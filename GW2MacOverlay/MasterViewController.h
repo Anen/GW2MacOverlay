@@ -27,7 +27,8 @@
 
 @property IBOutlet NSTableView *_statusTable;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evg;
-- (void)updateMasterView;
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evg;
+- (void) updateMasterView;
+- (IBAction) doClick:(NSTableView*)sender;
 
 @end

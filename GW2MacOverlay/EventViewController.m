@@ -16,7 +16,7 @@
 
 @implementation EventViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andListOfWorlds:(NSArray*)listW {
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andListOfWorlds:(NSArray*)listW {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Events Parser
@@ -29,7 +29,7 @@
     return self;
 }
 
-- (void)updateEventView{
+- (void) updateEventView{
     // Set doesn't allow duplicates
     NSMutableSet *finalList = [[NSMutableSet alloc] init];
     
@@ -63,7 +63,7 @@
 /* TABLE */
 /*********/
 
-- (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
+- (NSView *) tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
     [tableView setBackgroundColor:[NSColor lightGrayColor]];
     
@@ -87,8 +87,7 @@
     return cellView;
 }
 
-
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+- (NSInteger) numberOfRowsInTableView:(NSTableView *)tableView {
     return [self._listOfWorlds count];
 }
 

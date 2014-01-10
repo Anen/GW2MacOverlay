@@ -69,7 +69,7 @@
     // WINDOW
     self.window.backgroundColor = [self._borderColor color];
     [self.window setLevel:CGShieldingWindowLevel() + 1];
-    [self.window setAlphaValue:[self._opacitySlider floatValue]];
+    [self.window setAlphaValue:[self._opacityStepper floatValue]/100];
     //[self.window setStyleMask:NSClosableWindowMask];
     
     // TIMER
@@ -103,7 +103,7 @@
     [theDict setObject:[NSNumber numberWithInteger:[self._currentMode tag]] forKey:@"idMode"];
     [theDict setObject:[NSNumber numberWithInteger:[self._currentWorld tag]] forKey:@"idWorld"];
     [theDict setObject:[NSNumber numberWithInteger:[self._currentContinent tag]] forKey:@"idContinent"];
-    [theDict setObject:[NSNumber numberWithFloat:[self._opacitySlider floatValue]] forKey:@"opacity"];
+    [theDict setObject:[NSNumber numberWithFloat:[self._opacityStepper floatValue]] forKey:@"opacity"];
     [theDict setObject:[NSArchiver archivedDataWithRootObject:[self._activeColor color]] forKey:@"activeColor"];
     [theDict setObject:[NSArchiver archivedDataWithRootObject:[self._inactiveColor color]] forKey:@"inactiveColor"];
     [theDict setObject:[NSArchiver archivedDataWithRootObject:[self._backgroundColor color]] forKey:@"backgroundColor"];
@@ -129,7 +129,7 @@
         self._serialContinent = [[theDict objectForKey:@"idContinent"] integerValue];
 
         [self._opacityTextField setStringValue:[[theDict objectForKey:@"opacity"] stringValue]];
-        [self._opacitySlider setFloatValue:[[theDict objectForKey:@"opacity"] floatValue]];
+        [self._opacityStepper setIntegerValue:[[theDict objectForKey:@"opacity"] integerValue]];
         [self._activeColor setColor:[NSUnarchiver unarchiveObjectWithData:[theDict objectForKey:@"activeColor"]]];
         [self._inactiveColor setColor:[NSUnarchiver unarchiveObjectWithData:[theDict objectForKey:@"inactiveColor"]]];
         [self._backgroundColor setColor:[NSUnarchiver unarchiveObjectWithData:[theDict objectForKey:@"backgroundColor"]]];
@@ -148,8 +148,8 @@
     } else {
         NSLog(@"File %@ does not exist yet", self._serialPath);
         
-        [self._opacityTextField setStringValue:@"0.9"];
-        [self._opacitySlider setFloatValue:0.9f];
+        [self._opacityTextField setStringValue:@"90"];
+        [self._opacityStepper setIntegerValue:90];
         [self._activeColor setColor:[NSColor blackColor]];
         [self._inactiveColor setColor:[NSColor whiteColor]];
         [self._backgroundColor setColor:[NSColor lightGrayColor]];
@@ -448,7 +448,7 @@
     [[NSApp mainMenu] addItem: eventMenuItem];
 }
 
-- (IBAction) setMode:(id)sender {
+- (IBAction) setMode:(NSMenuItem*)sender {
     // Disable
     [self._currentMode setState:NSOffState];
     
@@ -463,7 +463,7 @@
     NSLog(@"%ld", [sender tag]);
 }
 
-- (IBAction) setWorld:(id)sender {
+- (IBAction) setWorld:(NSMenuItem*)sender {
     // Disable previous
     [self._currentWorld setState:NSOffState];
     [self._currentEvent setState:NSOffState];
@@ -486,7 +486,7 @@
     [self.masterViewController updateMasterView];
 }
 
-- (IBAction) setContinent:(id)sender {
+- (IBAction) setContinent:(NSMenuItem*)sender {
     // Disable previous
     [self._currentContinent setState:NSOffState];
     
@@ -506,7 +506,7 @@
     
 }
 
-- (IBAction) setEvent:(id)sender {
+- (IBAction) setEvent:(NSMenuItem*)sender {
     // Disable previous
     [self._currentWorld setState:NSOffState];
     [self._currentEvent setState:NSOffState];
@@ -542,9 +542,11 @@
     
     [self._opacityTextField setAction:@selector(setOpacityField:)];
     [self._opacityTextField setEnabled:false];
-    [self._opacitySlider setAction:@selector(setOpacitySlider:)];
-    [self._opacitySlider setMinValue:0];
-    [self._opacitySlider setMaxValue:1];
+    [self._opacityStepper setAction:@selector(changeStepper:)];
+    [self._opacityStepper setMinValue:0];
+    [self._opacityStepper setMaxValue:100];
+    [self._opacityStepper setIncrement:5];
+    //self._opacityStepper ;
     
     [self._playSound setAction:@selector(toggleSound:)];
     [self._playSound setState:self._soundIsActive];
@@ -576,25 +578,25 @@
     [self._uncheckAll setAction:@selector(uncheckAll:)];
 }
 
-- (IBAction) setActiveColor:(id)sender {
+- (IBAction) setActiveColor:(NSColorWell*)sender {
     self.masterViewController._activeColor = [sender color];
     self.eventViewController._activeColor = [sender color];
     [self reloadTable];
 }
 
-- (IBAction) setInactiveColor:(id)sender {
+- (IBAction) setInactiveColor:(NSColorWell*)sender {
     self.masterViewController._inactiveColor = [sender color];
     self.eventViewController._inactiveColor = [sender color];
     [self reloadTable];
 }
 
-- (IBAction) setTheBackgroundColor:(id)sender {
+- (IBAction) setTheBackgroundColor:(NSColorWell*)sender {
     self.masterViewController._backgroundColor = [sender color];
     self.eventViewController._backgroundColor = [sender color];
     [self reloadTable];
 }
 
-- (IBAction) setBorderColor:(id)sender {
+- (IBAction) setBorderColor:(NSColorWell*)sender {
     self.window.backgroundColor = [sender color];
 }
 
@@ -616,7 +618,7 @@
     [self reloadTable];
 }
 
-- (IBAction) setOpacityField:(id)sender {
+- (IBAction) setOpacityField:(NSTextField*)sender {
     NSLog(@"ENTER");
 }
 
@@ -627,9 +629,9 @@
     return NO; //we allow the user to enter anything
 }
 
-- (IBAction) setOpacitySlider:(NSSlider*)sender {
+- (IBAction) changeStepper:(NSStepper *)sender {
     [self._opacityTextField setStringValue:[sender stringValue]];
-    [self.window setAlphaValue:[sender floatValue]];
+    [self.window setAlphaValue:[self._opacityStepper floatValue]/100];
 }
 
 - (IBAction) toggleSound:(NSButton*)sender {

@@ -41,7 +41,7 @@
 @property IBOutlet NSButton *_resetColors;
 
 @property IBOutlet NSTextField *_opacityTextField;
-@property IBOutlet NSSlider *_opacitySlider;
+@property IBOutlet NSStepper *_opacityStepper;
 @property IBOutlet NSButton *_playSound;
 
 @property NSArray *_eventButtons;
@@ -80,20 +80,20 @@
 - (void) reloadTable;
 - (void) createMenu;
 
-- (IBAction) setMode:(id)sender;
-- (IBAction) setWorld:(id)sender;
-- (IBAction) setContinent:(id)sender;
-- (IBAction) setEvent:(id)sender;
+- (IBAction) setMode:(NSMenuItem*)sender;
+- (IBAction) setWorld:(NSMenuItem*)sender;
+- (IBAction) setContinent:(NSMenuItem*)sender;
+- (IBAction) setEvent:(NSMenuItem*)sender;
 
 - (void) createPreferences;
-- (IBAction) setActiveColor:(id)sender;
-- (IBAction) setInactiveColor:(id)sender;
-- (IBAction) setTheBackgroundColor:(id)sender;
-- (IBAction) setBorderColor:(id)sender;
+- (IBAction) setActiveColor:(NSColorWell*)sender;
+- (IBAction) setInactiveColor:(NSColorWell*)sender;
+- (IBAction) setTheBackgroundColor:(NSColorWell*)sender;
+- (IBAction) setBorderColor:(NSColorWell*)sender;
 - (IBAction) resetColors:(NSButton*)sender;
 
-- (IBAction) setOpacityField:(id)sender;
-- (IBAction) setOpacitySlider:(NSSlider*)sender;
+- (IBAction) setOpacityField:(NSTextField*)sender;
+- (IBAction) changeStepper:(NSStepper*)sender;
 - (IBAction) toggleSound:(NSButton*)sender;
 
 - (IBAction) toggleBoss:(NSButton*)sender;

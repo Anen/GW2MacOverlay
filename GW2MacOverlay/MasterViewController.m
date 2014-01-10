@@ -15,7 +15,7 @@
 
 @implementation MasterViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evgArray{
+- (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evgArray{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Events Parser
@@ -31,7 +31,7 @@
     return self;
 }
 
-- (void)updateMasterView{
+- (void) updateMasterView{
     
     // Update display
     [self._eventGroupsToDisplay removeAllObjects];
@@ -54,12 +54,11 @@
     [self._statusTable reloadData];
 }
 
-
 /*********/
 /* TABLE */
 /*********/
 
--(void) awakeFromNib {
+- (void) awakeFromNib {
     //NSLog(@"awakeFromNib");
     [self._statusTable setAction:@selector(doClick:)];
     [self._statusTable setTarget:self];
@@ -100,7 +99,7 @@
     return cellView;
 }
 
-- (void)doClick:(id)sender {
+- (IBAction) doClick:(NSTableView*)sender {
     NSInteger clickedRow = [sender clickedRow];
     NSLog(@"Click %ld", (long)clickedRow );
     
@@ -140,8 +139,7 @@
     }
 }
 
-
-- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+- (NSInteger) numberOfRowsInTableView:(NSTableView *)tableView {
     return [self._eventGroupsToDisplay count];
 }
 
