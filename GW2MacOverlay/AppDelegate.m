@@ -26,15 +26,17 @@
     // Launch GW2
     //[[NSWorkspace sharedWorkspace] launchApplication: @"Guild Wars 2"];
     
+    // Remove previous no longer used file.
+    [[NSFileManager defaultManager] removeItemAtPath:[NSHomeDirectory() stringByAppendingPathComponent:@"Documents/GW2MacOverlay.xml"] error:Nil];
+    
     // DATA
     [self initData];
     self._eventButtons = [[NSArray alloc] initWithObjects:self._dredge, self._eye, self._felemental, self._fshaman, self._fmaw, self._foulbear, self._golem, self._gjunglewurm, self._karkaqueen, self._megadestroyer, self._sbehemot, self._taidha, self._ulgoth, self._balthazar, self._dwayna, self._grenth, self._lyssa, self._melandru, self._jormag, self._shatterer, self._tequalt, nil];
     
     [self._connectTextField setStringValue:@"Connecting to GW2 API..."];
     
-    // Unserialize data
-    self._serialPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/GW2MacOverlay.xml"];
-    [self readFromFile];
+    // Init user defaults
+    [self createUserDefaults];
     
     // MENU
     [self createMenu];
@@ -45,29 +47,20 @@
 
     // INIT VIEWS
     self.masterViewController = [[MasterViewController alloc] initWithNibName:@"MasterViewController" bundle:nil andEventGroup:self._eventGroups];
-    self.masterViewController._activeColor = [self._activeColor color];
-    self.masterViewController._inactiveColor = [self._inactiveColor color];
-    self.masterViewController._backgroundColor = [self._backgroundColor color];
-    
     self.eventViewController = [[EventViewController alloc] initWithNibName:@"EventViewController" bundle:nil andListOfWorlds:self._worldNamesEU];
-    self.eventViewController._activeColor = [self._activeColor color];
-    self.eventViewController._inactiveColor = [self._inactiveColor color];
-    self.eventViewController._backgroundColor = [self._backgroundColor color];
     
     // If serial info are present
-    if (self._serialWorld) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"idWorld"]) {
         // Insert master view (default)
         [self.window.contentView addSubview:self.masterViewController.view];
         self.masterViewController.view.frame = ((NSView*)self.window.contentView).bounds;
         
         // Update UI
-        self.masterViewController._linkWaypoint = [self._currentMode tag];
-        self.masterViewController._selectedWorldId = [self._currentWorld tag];
         [self.masterViewController updateMasterView];
     }
     
     // WINDOW
-    self.window.backgroundColor = [self._borderColor color];
+    self.window.backgroundColor = [NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"borderColor"]];
     [self.window setLevel:CGShieldingWindowLevel() + 1];
     [self.window setAlphaValue:[self._opacityStepper floatValue]/100];
     //[self.window setStyleMask:NSClosableWindowMask];
@@ -81,10 +74,6 @@
 }
 
 - (NSApplicationTerminateReply) applicationShouldTerminate:(NSApplication *)theApplication {
-    
-    // Serialize
-    [self writeToFile];
-    
     return NSTerminateNow;
 }
 
@@ -96,67 +85,53 @@
 /* SERIALIZATION */
 /*****************/
 
-- (void) writeToFile{
+- (void) createUserDefaults {
     
-    NSMutableDictionary *theDict = [NSMutableDictionary dictionaryWithCapacity:2];
-    
-    [theDict setObject:[NSNumber numberWithInteger:[self._currentMode tag]] forKey:@"idMode"];
-    [theDict setObject:[NSNumber numberWithInteger:[self._currentWorld tag]] forKey:@"idWorld"];
-    [theDict setObject:[NSNumber numberWithInteger:[self._currentContinent tag]] forKey:@"idContinent"];
-    [theDict setObject:[NSNumber numberWithFloat:[self._opacityStepper floatValue]] forKey:@"opacity"];
-    [theDict setObject:[NSArchiver archivedDataWithRootObject:[self._activeColor color]] forKey:@"activeColor"];
-    [theDict setObject:[NSArchiver archivedDataWithRootObject:[self._inactiveColor color]] forKey:@"inactiveColor"];
-    [theDict setObject:[NSArchiver archivedDataWithRootObject:[self._backgroundColor color]] forKey:@"backgroundColor"];
-    [theDict setObject:[NSArchiver archivedDataWithRootObject:[self._borderColor color]] forKey:@"borderColor"];
-    [theDict setObject:[NSNumber numberWithBool:self._soundIsActive] forKey:@"sound"];
-    
-    for (NSButton *button in self._eventButtons) {
-        [theDict setObject:[NSNumber numberWithBool:[button state]] forKey:[button title]];
+    // Reset?
+    if (false) {
+        NSLog(@"Reset defaults");
+        for (id key in [[NSUserDefaults standardUserDefaults] dictionaryRepresentation]) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
+        }
     }
     
-    NSLog(@"Writing to %@ %@", self._serialPath, theDict);
-        
-    [theDict writeToFile:self._serialPath atomically:YES];
-}
-
-- (void) readFromFile {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self._serialPath]) {
-        NSDictionary *theDict = [NSDictionary dictionaryWithContentsOfFile:self._serialPath];
-        NSLog(@"Reading from %@ %@", self._serialPath, theDict);
-        
-        self._serialMode = [[theDict objectForKey:@"idMode"] integerValue];
-        self._serialWorld = [[theDict objectForKey:@"idWorld"] integerValue];
-        self._serialContinent = [[theDict objectForKey:@"idContinent"] integerValue];
-
-        [self._opacityTextField setStringValue:[[theDict objectForKey:@"opacity"] stringValue]];
-        [self._opacityStepper setIntegerValue:[[theDict objectForKey:@"opacity"] integerValue]];
-        [self._activeColor setColor:[NSUnarchiver unarchiveObjectWithData:[theDict objectForKey:@"activeColor"]]];
-        [self._inactiveColor setColor:[NSUnarchiver unarchiveObjectWithData:[theDict objectForKey:@"inactiveColor"]]];
-        [self._backgroundColor setColor:[NSUnarchiver unarchiveObjectWithData:[theDict objectForKey:@"backgroundColor"]]];
-        [self._borderColor setColor:[NSUnarchiver unarchiveObjectWithData:[theDict objectForKey:@"borderColor"]]];
-        
-        self._soundIsActive = [[theDict objectForKey:@"sound"] boolValue];
-        
-        for (NSButton *button in self._eventButtons) {
-            [button setState:[[theDict objectForKey:[button title]] boolValue]];
-        }
-        
-        for (EventGroup *evg in self._eventGroups) {
-            evg._toDisplay = [[theDict objectForKey:evg._name] boolValue];
-        }
-        
-    } else {
-        NSLog(@"File %@ does not exist yet", self._serialPath);
-        
-        [self._opacityTextField setStringValue:@"90"];
-        [self._opacityStepper setIntegerValue:90];
-        [self._activeColor setColor:[NSColor blackColor]];
-        [self._inactiveColor setColor:[NSColor whiteColor]];
-        [self._backgroundColor setColor:[NSColor lightGrayColor]];
-        [self._borderColor setColor:[NSColor grayColor]];
-        self._soundIsActive = false;
-        
-        for (NSButton *button in self._eventButtons) {
+    // MENU DEFAULTS
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"idMode"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"idMode"];
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"idContinent"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:2000] forKey:@"idContinent"];
+    }
+    
+    // PREFERENCE DEFAULTS
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"activeColor"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor blackColor]] forKey:@"activeColor"];
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"inactiveColor"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor whiteColor]] forKey:@"inactiveColor"];
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"backgroundColor"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor lightGrayColor]] forKey:@"backgroundColor"];
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"borderColor"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor grayColor]] forKey:@"borderColor"];
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"opacity"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:90] forKey:@"opacity"];
+    }
+    
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"sound"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"sound"];
+    }
+    
+    for (NSButton *button in self._eventButtons) {
+        if (![[NSUserDefaults standardUserDefaults] objectForKey:[button title]]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:[button title]];
             [button setState:NSOnState];
         }
     }
@@ -370,11 +345,13 @@
     
     // Initialization
     self._currentMode = normalModeItem; // Default
-    if (self._serialMode == 1) {
+    NSInteger mode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"idMode"] integerValue];
+    
+    if (mode == 1) {
         self._currentMode = waypointGuildModeItem;
-    } else if (self._serialMode == 2) {
+    } else if (mode == 2) {
         self._currentMode = waypointSayModeItem;
-    } else if (self._serialMode == 3) {
+    } else if (mode == 3) {
         self._currentMode = clipboardSayModeItem;
     }
     [self._currentMode setState:NSOnState];
@@ -382,6 +359,7 @@
     // MENU WORLD
     NSMenu *EUWorldMenu = [[NSMenu alloc] initWithTitle:@"EU Worlds"];
     NSMenu *NAWorldMenu = [[NSMenu alloc] initWithTitle:@"NA Worlds"];
+    NSInteger world = [[[NSUserDefaults standardUserDefaults] objectForKey:@"idWorld"] integerValue];
     
     for(World *w in self._worldNamesEU){
         NSMenuItem *tmpItem = [[NSMenuItem alloc] initWithTitle:w._name action:@selector(setWorld:) keyEquivalent:@""];
@@ -389,7 +367,7 @@
         [EUWorldMenu addItem:tmpItem];
         
         // Init?
-        if (w._id == self._serialWorld) {
+        if (w._id == world) {
             self._currentWorld = tmpItem;
             [self._currentWorld setState:NSOnState];
             [self.window setTitle:[self._currentWorld title]];
@@ -402,7 +380,7 @@
         [NAWorldMenu addItem:tmpItem];
         
         // Init?
-        if (w._id == self._serialWorld) {
+        if (w._id == world) {
             self._currentWorld = tmpItem;
             [self._currentWorld setState:NSOnState];
             [self.window setTitle:[self._currentWorld title]];
@@ -429,7 +407,7 @@
     [eventMenu addItem:NAContinentItem];
     
     self._currentContinent = EUContinentItem; // default
-    if (self._serialContinent == 1000) {
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"idContinent"] integerValue] == 1000) {
         self._currentContinent = NAContinentItem;
     }
     [self._currentContinent setState:NSOnState];
@@ -457,7 +435,7 @@
     [self._currentMode setState:NSOnState];
     
     // Update UI
-    self.masterViewController._linkWaypoint = [self._currentMode tag];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:[self._currentMode tag]] forKey:@"idMode"];
     //[self.masterViewController._statusTable reloadData];
     
     NSLog(@"%ld", [sender tag]);
@@ -482,7 +460,7 @@
     self.masterViewController.view.frame = ((NSView*)self.window.contentView).bounds;
     
     // Update UI
-    self.masterViewController._selectedWorldId = [self._currentWorld tag];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:[sender tag]] forKey:@"idWorld"];
     [self.masterViewController updateMasterView];
 }
 
@@ -491,6 +469,7 @@
     [self._currentContinent setState:NSOffState];
     
     // Enable current
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:[sender tag]] forKey:@"idContinent"];
     self._currentContinent = sender;
     [self._currentContinent setState:NSOnState];
     
@@ -534,86 +513,81 @@
 /***************/
 
 - (void) createPreferences {
-    [self._activeColor setAction:@selector(setActiveColor:)];
-    [self._inactiveColor setAction:@selector(setInactiveColor:)];
-    [self._backgroundColor setAction:@selector(setTheBackgroundColor:)];
-    [self._borderColor setAction:@selector(setBorderColor:)];
+    [self._activeColorWell setAction:@selector(setActiveColor:)];
+    [self._activeColorWell setColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeColor"]]];
+    
+    [self._inactiveColorWell setAction:@selector(setInactiveColor:)];
+    [self._inactiveColorWell setColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"inactiveColor"]]];
+    
+    [self._backgroundColorWell setAction:@selector(setTheBackgroundColor:)];
+    [self._backgroundColorWell setColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"backgroundColor"]]];
+    
+    [self._borderColorWell setAction:@selector(setBorderColor:)];
+    [self._borderColorWell setColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"borderColor"]]];
+
     [self._resetColors setAction:@selector(resetColors:)];
     
     [self._opacityTextField setAction:@selector(setOpacityField:)];
     [self._opacityTextField setEnabled:false];
+    [self._opacityTextField setIntegerValue:[[[NSUserDefaults standardUserDefaults] objectForKey:@"opacity"] integerValue]];
+    
     [self._opacityStepper setAction:@selector(changeStepper:)];
     [self._opacityStepper setMinValue:0];
     [self._opacityStepper setMaxValue:100];
     [self._opacityStepper setIncrement:5];
-    //self._opacityStepper ;
+    [self._opacityStepper setIntegerValue:[[[NSUserDefaults standardUserDefaults] objectForKey:@"opacity"] integerValue]];
     
     [self._playSound setAction:@selector(toggleSound:)];
-    [self._playSound setState:self._soundIsActive];
+    [self._playSound setState:[[NSUserDefaults standardUserDefaults] boolForKey:@"sound"]];
     
-    [self._dredge setAction:@selector(toggleBoss:)];
-    [self._eye setAction:@selector(toggleBoss:)];
-    [self._felemental setAction:@selector(toggleBoss:)];
-    [self._fshaman setAction:@selector(toggleBoss:)];
-    [self._fmaw setAction:@selector(toggleBoss:)];
-    [self._foulbear setAction:@selector(toggleBoss:)];
-    [self._golem setAction:@selector(toggleBoss:)];
-    [self._gjunglewurm setAction:@selector(toggleBoss:)];
-    [self._karkaqueen setAction:@selector(toggleBoss:)];
-    [self._megadestroyer setAction:@selector(toggleBoss:)];
-    [self._sbehemot setAction:@selector(toggleBoss:)];
-    [self._taidha setAction:@selector(toggleBoss:)];
-    [self._ulgoth setAction:@selector(toggleBoss:)];
-    
-    [self._balthazar setAction:@selector(toggleBoss:)];
-    [self._dwayna setAction:@selector(toggleBoss:)];
-    [self._grenth setAction:@selector(toggleBoss:)];
-    [self._lyssa setAction:@selector(toggleBoss:)];
-    [self._melandru setAction:@selector(toggleBoss:)];
-    [self._jormag setAction:@selector(toggleBoss:)];
-    [self._shatterer setAction:@selector(toggleBoss:)];
-    [self._tequalt setAction:@selector(toggleBoss:)];
+    for (NSButton *button in self._eventButtons) {
+        [button setAction:@selector(toggleBoss:)];
+     
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:[button title]]) {
+            [button setState:NSOnState];
+        } else {
+            [button setState:NSOffState];
+        }
+    }
     
     [self._checkAll setAction:@selector(checkAll:)];
     [self._uncheckAll setAction:@selector(uncheckAll:)];
 }
 
 - (IBAction) setActiveColor:(NSColorWell*)sender {
-    self.masterViewController._activeColor = [sender color];
-    self.eventViewController._activeColor = [sender color];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[sender color]] forKey:@"activeColor"];
     [self reloadTable];
 }
 
 - (IBAction) setInactiveColor:(NSColorWell*)sender {
-    self.masterViewController._inactiveColor = [sender color];
-    self.eventViewController._inactiveColor = [sender color];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[sender color]] forKey:@"inactiveColor"];
     [self reloadTable];
 }
 
 - (IBAction) setTheBackgroundColor:(NSColorWell*)sender {
-    self.masterViewController._backgroundColor = [sender color];
-    self.eventViewController._backgroundColor = [sender color];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[sender color]] forKey:@"backgroundColor"];
     [self reloadTable];
 }
 
 - (IBAction) setBorderColor:(NSColorWell*)sender {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[sender color]] forKey:@"borderColor"];
     self.window.backgroundColor = [sender color];
 }
 
 - (IBAction) resetColors:(NSButton*)sender {
-    [self._activeColor setColor:[NSColor blackColor]];
-    [self._inactiveColor setColor:[NSColor whiteColor]];
-    [self._backgroundColor setColor:[NSColor lightGrayColor]];
-    [self._borderColor setColor:[NSColor grayColor]];
+    // Reset defaults
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor blackColor]] forKey:@"activeColor"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor whiteColor]] forKey:@"inactiveColor"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor lightGrayColor]] forKey:@"backgroundColor"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSArchiver archivedDataWithRootObject:[NSColor grayColor]] forKey:@"borderColor"];
+    
+    // Reset wells
+    [self._activeColorWell setColor:[NSColor blackColor]];
+    [self._inactiveColorWell setColor:[NSColor whiteColor]];
+    [self._backgroundColorWell setColor:[NSColor lightGrayColor]];
+    [self._borderColorWell setColor:[NSColor grayColor]];
     
     self.window.backgroundColor = [NSColor grayColor];
-    
-    self.masterViewController._activeColor = [NSColor blackColor];
-    self.masterViewController._inactiveColor = [NSColor whiteColor];
-    self.masterViewController._backgroundColor = [NSColor lightGrayColor];
-    self.eventViewController._activeColor = [NSColor blackColor];
-    self.eventViewController._inactiveColor = [NSColor whiteColor];
-    self.eventViewController._backgroundColor = [NSColor lightGrayColor];
     
     [self reloadTable];
 }
@@ -623,13 +597,12 @@
 }
 
 - (BOOL) textField:(NSTextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    //[self verifyTheUserWithUsername:[textField.text stringByReplacingCharactersInRange:range withString:string]];
-    //do your appropriate check here
     NSLog(@"CALLED");
     return NO; //we allow the user to enter anything
 }
 
 - (IBAction) changeStepper:(NSStepper *)sender {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:[sender integerValue]] forKey:@"opacity"];
     [self._opacityTextField setStringValue:[sender stringValue]];
     [self.window setAlphaValue:[self._opacityStepper floatValue]/100];
 }
@@ -637,10 +610,10 @@
 - (IBAction) toggleSound:(NSButton*)sender {
     if ([sender state] == NSOnState) {
         NSLog(@"Sound ON");
-        self._soundIsActive = true;
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"sound"];
     } else {
         NSLog(@"Sound OFF");
-        self._soundIsActive = false;
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"sound"];
     }
 }
 
@@ -650,10 +623,11 @@
     for (EventGroup *evg in self._eventGroups) {
         if ([evg._name isEqualToString:[sender title]]) {
             if ([sender state] == NSOnState) {
-                evg._toDisplay = true;
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:evg._name];
             } else {
-                evg._toDisplay = false;
+                [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:evg._name];
             }
+            break;
         }
     }
     
@@ -662,11 +636,8 @@
 
 - (IBAction) checkAll:(NSButton*)sender {
     for (NSButton *button in self._eventButtons) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:[button title]];
         [button setState:NSOnState];
-    }
-    
-    for (EventGroup *evg in self._eventGroups) {
-        evg._toDisplay = true;
     }
     
     [self.masterViewController updateMasterView];
@@ -674,11 +645,8 @@
 
 - (IBAction) uncheckAll:(NSButton*)sender {
     for (NSButton *button in self._eventButtons) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:[button title]];
         [button setState:NSOffState];
-    }
-    
-    for (EventGroup *evg in self._eventGroups) {
-        evg._toDisplay = false;
     }
     
     [self.masterViewController updateMasterView];

@@ -14,7 +14,6 @@
 @property NSString *_name;
 @property NSString *_waypoint;
 @property BOOL _isActive;
-@property BOOL _toDisplay;
 @property NSMutableArray *_listOfEvents;
 
 - (void) printSummary;

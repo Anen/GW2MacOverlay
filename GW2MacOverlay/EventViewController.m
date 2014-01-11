@@ -65,7 +65,7 @@
 
 - (NSView *) tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
-    [tableView setBackgroundColor:[NSColor lightGrayColor]];
+    [tableView setBackgroundColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"backgroundColor"]]];
     
     // Get a new ViewCell
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
@@ -76,9 +76,9 @@
     //Multicolumn
     if ([tableColumn.identifier isEqualToString:@"worldColumn"]) {
         if (w._eventActive) {
-            [cellView.textField setTextColor:self._activeColor];
+            [cellView.textField setTextColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeColor"]]];
         } else {
-            [cellView.textField setTextColor:self._inactiveColor];
+            [cellView.textField setTextColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"inactiveColor"]]];
         }
         cellView.textField.stringValue = w._name;
         return cellView;

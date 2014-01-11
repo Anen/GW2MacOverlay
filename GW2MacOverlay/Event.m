@@ -10,13 +10,8 @@
 
 @implementation Event
 
-@synthesize _id;
-@synthesize _name;
-@synthesize _status;
-@synthesize _world_id;
-
 - (void) print{
-    NSLog(@"Event %@ is %@. %@\n", _id, _name, _status );
+    NSLog(@"Event %@ is %@. %@\n", self._id, self._name, self._status );
 }
 
 - (Event*) initWithId:(NSString*)id andName:(NSString *)name{
@@ -26,7 +21,6 @@
         self._id = id;
         self._name = name;
         self._status = @"N/A";
-        self._world_id = @"N/A";
     }
     return self;
 }

@@ -16,13 +16,6 @@
 @property NSMenuItem *_currentContinent;
 @property NSMenuItem *_currentEvent;
 
-// Serial
-@property NSInteger _serialMode;
-@property NSInteger _serialWorld;
-@property NSInteger _serialContinent;
-@property NSString *_serialPath;
-@property BOOL _soundIsActive;
-
 // Data
 @property NSArray *_worldNamesEU;
 @property NSArray *_worldNamesNA;
@@ -34,10 +27,10 @@
 
 // Preference window
 @property (assign) IBOutlet NSWindow *prefWindow;
-@property IBOutlet NSColorWell *_activeColor;
-@property IBOutlet NSColorWell *_inactiveColor;
-@property IBOutlet NSColorWell *_backgroundColor;
-@property IBOutlet NSColorWell *_borderColor;
+@property IBOutlet NSColorWell *_activeColorWell;
+@property IBOutlet NSColorWell *_inactiveColorWell;
+@property IBOutlet NSColorWell *_backgroundColorWell;
+@property IBOutlet NSColorWell *_borderColorWell;
 @property IBOutlet NSButton *_resetColors;
 
 @property IBOutlet NSTextField *_opacityTextField;
@@ -71,10 +64,7 @@
 @property IBOutlet NSButton *_uncheckAll;
 
 // METHODS
-
-- (void) writeToFile;
-- (void) readFromFile;
-
+- (void) createUserDefaults;
 - (void) initData;
 - (void) updateData:(NSTimer*)theTimer;
 - (void) reloadTable;

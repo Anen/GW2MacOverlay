@@ -38,8 +38,6 @@
         va_end(args);
         
         [self updateActive];
-        
-        self._toDisplay = false;
     }
     
     return self;
@@ -48,10 +46,17 @@
 - (void) updateActive{
     BOOL active = false;
     
+    // Update activity from listOfEvents
     for(Event *e in self._listOfEvents){
         if([e._status isEqualToString:@"Active"]){
             active = true;
         }
+    }
+    
+    // Play sound when inactive to active
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sound"] && !self._isActive && active) {
+        NSLog(@"Playing sound for %@", self._name);
+        //NSBeep();
     }
     
     self._isActive = active;

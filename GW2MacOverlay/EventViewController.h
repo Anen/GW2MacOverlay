@@ -20,11 +20,6 @@
 // Menu
 @property EventGroup *_egToDisplay;
 
-// Colors
-@property NSColor *_activeColor;
-@property NSColor *_inactiveColor;
-@property NSColor *_backgroundColor;
-
 @property IBOutlet NSTableView *_statusTable;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andListOfWorlds:(NSArray*)listW;

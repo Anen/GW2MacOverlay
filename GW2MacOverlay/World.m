@@ -10,11 +10,8 @@
 
 @implementation World
 
-@synthesize _id;
-@synthesize _name; // Generates getter and setter
-
 - (void) print{
-    NSLog(@"World %ld is %@\n", _id, _name );
+    NSLog(@"World %ld is %@\n", self._id, self._name );
 }
 
 - (World*) initWithId:(NSInteger)id andName:(NSString *)name{

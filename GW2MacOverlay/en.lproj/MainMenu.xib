@@ -72,14 +72,14 @@
         <window title="GW2MacOverlay" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="371">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-            <rect key="contentRect" x="335" y="390" width="200" height="200"/>
+            <rect key="contentRect" x="335" y="390" width="200" height="238"/>
             <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
             <view key="contentView" id="372">
-                <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
+                <rect key="frame" x="0.0" y="0.0" width="200" height="238"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B4Q-Kt-3K9">
-                        <rect key="frame" x="18" y="92" width="164" height="17"/>
+                        <rect key="frame" x="18" y="130" width="164" height="17"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="MKO-1x-saZ">
                             <font key="font" metaFont="system"/>
@@ -92,10 +92,10 @@
         </window>
         <customObject id="494" customClass="AppDelegate">
             <connections>
-                <outlet property="_activeColor" destination="uKt-wQ-oEH" id="IZm-9L-sll"/>
-                <outlet property="_backgroundColor" destination="6Sl-UZ-7OM" id="YmN-nk-Huh"/>
+                <outlet property="_activeColorWell" destination="uKt-wQ-oEH" id="WXg-MZ-GKH"/>
+                <outlet property="_backgroundColorWell" destination="6Sl-UZ-7OM" id="MEs-jM-3Eu"/>
                 <outlet property="_balthazar" destination="Jrp-pn-OJb" id="ln3-wh-uis"/>
-                <outlet property="_borderColor" destination="G0x-EG-Fue" id="gh5-cI-f2T"/>
+                <outlet property="_borderColorWell" destination="G0x-EG-Fue" id="lea-RT-BKv"/>
                 <outlet property="_checkAll" destination="Xv5-PE-Cjo" id="rTO-Lh-FFn"/>
                 <outlet property="_connectTextField" destination="B4Q-Kt-3K9" id="yj9-yB-QDP"/>
                 <outlet property="_dredge" destination="4qr-0Q-Y3a" id="DuG-09-q0m"/>
@@ -108,7 +108,7 @@
                 <outlet property="_gjunglewurm" destination="LJn-SL-JGl" id="clW-Wm-4XA"/>
                 <outlet property="_golem" destination="ED4-d8-VEq" id="whn-z3-rm2"/>
                 <outlet property="_grenth" destination="YCg-wo-yJD" id="Tng-rY-qTL"/>
-                <outlet property="_inactiveColor" destination="StN-7M-oT9" id="xbU-zh-aMX"/>
+                <outlet property="_inactiveColorWell" destination="StN-7M-oT9" id="BBN-8E-NvM"/>
                 <outlet property="_jormag" destination="yum-2W-2vw" id="bFL-rH-x02"/>
                 <outlet property="_karkaqueen" destination="wCL-p6-4sa" id="Dee-FH-yjI"/>
                 <outlet property="_lyssa" destination="NzV-Dw-VeR" id="xoP-t7-DZD"/>

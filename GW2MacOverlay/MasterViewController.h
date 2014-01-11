@@ -16,15 +16,6 @@
 @property NSArray *_eventGroups;
 @property NSMutableArray *_eventGroupsToDisplay;
 
-// Menu
-@property NSInteger _linkWaypoint;
-@property NSInteger _selectedWorldId;
-
-// Colors
-@property NSColor *_activeColor;
-@property NSColor *_inactiveColor;
-@property NSColor *_backgroundColor;
-
 @property IBOutlet NSTableView *_statusTable;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andEventGroup:(NSArray *)evg;

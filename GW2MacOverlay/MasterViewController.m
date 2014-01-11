@@ -33,16 +33,16 @@
 
 - (void) updateMasterView{
     
-    // Update display
+    // Update display from preference
     [self._eventGroupsToDisplay removeAllObjects];
     for (EventGroup *evg in self._eventGroups) {
-        if (evg._toDisplay) {
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:evg._name] boolValue]) {
             [self._eventGroupsToDisplay addObject:evg];
         }
     }
     
     // Update parser
-    [self._ejp updateByWorld:self._selectedWorldId andEventGroups:self._eventGroupsToDisplay];
+    [self._ejp updateByWorld:[[[NSUserDefaults standardUserDefaults] objectForKey:@"idWorld"] integerValue] andEventGroups:self._eventGroupsToDisplay];
     
     // Sort events
     NSSortDescriptor *sortActive = [NSSortDescriptor sortDescriptorWithKey:@"_isActive" ascending:NO selector:@selector(compare:)];
@@ -66,7 +66,7 @@
 
 - (NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row {
     
-    [tableView setBackgroundColor:self._backgroundColor];
+    [tableView setBackgroundColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"backgroundColor"]]];
     
     // Get a new ViewCell
     NSTableCellView *cellView = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
@@ -88,9 +88,9 @@
     
     if ([tableColumn.identifier isEqualToString:@"eventColumn"]) {
         if (eg._isActive) {
-            [cellView.textField setTextColor:self._activeColor];
+            [cellView.textField setTextColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"activeColor"]]];
         } else {
-            [cellView.textField setTextColor:self._inactiveColor];
+            [cellView.textField setTextColor:[NSUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"inactiveColor"]]];
         }
         cellView.textField.stringValue = eg._name;
         return cellView;
@@ -107,15 +107,17 @@
         // Get EventGroup
         EventGroup *eg = [self._eventGroups objectAtIndex:clickedRow];
         
-        if (self._linkWaypoint == 1 || self._linkWaypoint == 2) {
+        NSInteger mode = [[NSUserDefaults standardUserDefaults] integerForKey:@"idMode"];
+        
+        if (mode == 1 || mode == 2) {
             
             NSMutableString* cmd = [NSMutableString new];
             [cmd appendString:@"tell application \"System Events\" to keystroke return\n"];
             [cmd appendString:@"delay 0.1\n"];
             
-            if (self._linkWaypoint == 1) {
+            if (mode == 1) {
                 [cmd appendString:@"tell application \"System Events\" to keystroke \"/g "];
-            } else if (self._linkWaypoint == 2) {
+            } else if (mode == 2) {
                 [cmd appendString:@"tell application \"System Events\" to keystroke \"/s "];
             }
             
@@ -127,7 +129,7 @@
             NSAppleScript* script = [[NSAppleScript alloc] initWithSource:cmd];
             NSDictionary* err = nil;
             /*NSAppleEventDescriptor *result = */[script executeAndReturnError:&err];
-        } else if (self._linkWaypoint == 3) {
+        } else if (mode == 3) {
             NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
             [pasteboard clearContents];
             NSArray *objectsToCopy = [NSArray arrayWithObjects:eg._name, @" ", eg._waypoint, nil];
