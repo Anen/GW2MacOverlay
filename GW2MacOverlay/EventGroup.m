@@ -54,10 +54,16 @@
     }
     
     // Play sound when inactive to active
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"sound"] && !self._isActive && active) {
-        NSLog(@"Playing sound for %@", self._name);
-        //NSBeep();
+    if (!self._isActive && active) {
+        if ([[NSUserDefaults standardUserDefaults] integerForKey:@"sound"] == 1 ) {
+            NSLog(@"Playing sound for %@", self._name);
+            NSBeep();
+        } else if ([[NSUserDefaults standardUserDefaults] integerForKey:@"sound"] == 2 ) {
+            NSLog(@"Playing speech for %@", self._name);
+            //NSBeep();
+        }
     }
+    
     
     self._isActive = active;
 }

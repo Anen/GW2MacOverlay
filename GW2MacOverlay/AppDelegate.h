@@ -11,7 +11,6 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 // Menu
-@property NSMenuItem *_currentMode;
 @property NSMenuItem *_currentWorld;
 @property NSMenuItem *_currentContinent;
 @property NSMenuItem *_currentEvent;
@@ -35,7 +34,9 @@
 
 @property IBOutlet NSTextField *_opacityTextField;
 @property IBOutlet NSStepper *_opacityStepper;
-@property IBOutlet NSButton *_playSound;
+@property IBOutlet NSMatrix *_waypointRadio;
+@property IBOutlet NSMatrix *_soundRadio;
+
 
 @property NSArray *_eventButtons;
 @property IBOutlet NSButton *_dredge;
@@ -84,7 +85,7 @@
 
 - (IBAction) setOpacityField:(NSTextField*)sender;
 - (IBAction) changeStepper:(NSStepper*)sender;
-- (IBAction) toggleSound:(NSButton*)sender;
+- (IBAction) setSound:(NSButton*)sender;
 
 - (IBAction) toggleBoss:(NSButton*)sender;
 - (IBAction) checkAll:(NSButton*)sender;

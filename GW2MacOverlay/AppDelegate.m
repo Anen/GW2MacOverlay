@@ -49,7 +49,7 @@
     self.masterViewController = [[MasterViewController alloc] initWithNibName:@"MasterViewController" bundle:nil andEventGroup:self._eventGroups];
     self.eventViewController = [[EventViewController alloc] initWithNibName:@"EventViewController" bundle:nil andListOfWorlds:self._worldNamesEU];
     
-    // If serial info are present
+    // If serial info is present
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"idWorld"]) {
         // Insert master view (default)
         [self.window.contentView addSubview:self.masterViewController.view];
@@ -96,10 +96,6 @@
     }
     
     // MENU DEFAULTS
-    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"idMode"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"idMode"];
-    }
-    
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"idContinent"]) {
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:2000] forKey:@"idContinent"];
     }
@@ -125,8 +121,12 @@
         [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:90] forKey:@"opacity"];
     }
     
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:@"mode"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"mode"];
+    }
+    
     if (![[NSUserDefaults standardUserDefaults] objectForKey:@"sound"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"sound"];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"sound"];
     }
     
     for (NSButton *button in self._eventButtons) {
@@ -321,45 +321,10 @@
 /********/
 
 - (void) createMenu {
-    // MENU MODE
-    NSMenu *modeMenu = [[NSMenu alloc] initWithTitle:@"Mode"];
-    NSMenuItem *normalModeItem = [[NSMenuItem alloc] initWithTitle:@"Normal" action:@selector(setMode:) keyEquivalent:@""];
-    NSMenuItem *waypointGuildModeItem = [[NSMenuItem alloc] initWithTitle:@"Waypoint /g" action:@selector(setMode:) keyEquivalent:@""];
-    NSMenuItem *waypointSayModeItem = [[NSMenuItem alloc] initWithTitle:@"Waypoint /s" action:@selector(setMode:) keyEquivalent:@""];
-    NSMenuItem *clipboardSayModeItem = [[NSMenuItem alloc] initWithTitle:@"Clipboard" action:@selector(setMode:) keyEquivalent:@""];
-    
-    [normalModeItem setTag:0];
-    [waypointGuildModeItem setTag:1];
-    [waypointSayModeItem setTag:2];
-    [clipboardSayModeItem setTag:3];
-    
-    [modeMenu addItem:normalModeItem];
-    [modeMenu addItem:waypointGuildModeItem];
-    [modeMenu addItem:waypointSayModeItem];
-    [modeMenu addItem:clipboardSayModeItem];
-    
-    NSMenuItem *modeMenuItem = [[NSMenuItem alloc] init];
-    [modeMenuItem setSubmenu: modeMenu];
-    
-    [[NSApp mainMenu] addItem: modeMenuItem];
-    
-    // Initialization
-    self._currentMode = normalModeItem; // Default
-    NSInteger mode = [[[NSUserDefaults standardUserDefaults] objectForKey:@"idMode"] integerValue];
-    
-    if (mode == 1) {
-        self._currentMode = waypointGuildModeItem;
-    } else if (mode == 2) {
-        self._currentMode = waypointSayModeItem;
-    } else if (mode == 3) {
-        self._currentMode = clipboardSayModeItem;
-    }
-    [self._currentMode setState:NSOnState];
-    
     // MENU WORLD
     NSMenu *EUWorldMenu = [[NSMenu alloc] initWithTitle:@"EU Worlds"];
     NSMenu *NAWorldMenu = [[NSMenu alloc] initWithTitle:@"NA Worlds"];
-    NSInteger world = [[[NSUserDefaults standardUserDefaults] objectForKey:@"idWorld"] integerValue];
+    NSInteger world = [[NSUserDefaults standardUserDefaults] integerForKey:@"idWorld"];
     
     for(World *w in self._worldNamesEU){
         NSMenuItem *tmpItem = [[NSMenuItem alloc] initWithTitle:w._name action:@selector(setWorld:) keyEquivalent:@""];
@@ -407,7 +372,7 @@
     [eventMenu addItem:NAContinentItem];
     
     self._currentContinent = EUContinentItem; // default
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:@"idContinent"] integerValue] == 1000) {
+    if ([[NSUserDefaults standardUserDefaults] integerForKey:@"idContinent"] == 1000) {
         self._currentContinent = NAContinentItem;
     }
     [self._currentContinent setState:NSOnState];
@@ -424,21 +389,6 @@
     NSMenuItem *eventMenuItem = [[NSMenuItem alloc] init];
     [eventMenuItem setSubmenu: eventMenu];
     [[NSApp mainMenu] addItem: eventMenuItem];
-}
-
-- (IBAction) setMode:(NSMenuItem*)sender {
-    // Disable
-    [self._currentMode setState:NSOffState];
-    
-    //Enable
-    self._currentMode = sender;
-    [self._currentMode setState:NSOnState];
-    
-    // Update UI
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:[self._currentMode tag]] forKey:@"idMode"];
-    //[self.masterViewController._statusTable reloadData];
-    
-    NSLog(@"%ld", [sender tag]);
 }
 
 - (IBAction) setWorld:(NSMenuItem*)sender {
@@ -529,16 +479,19 @@
     
     [self._opacityTextField setAction:@selector(setOpacityField:)];
     [self._opacityTextField setEnabled:false];
-    [self._opacityTextField setIntegerValue:[[[NSUserDefaults standardUserDefaults] objectForKey:@"opacity"] integerValue]];
+    [self._opacityTextField setIntegerValue:[[NSUserDefaults standardUserDefaults] integerForKey:@"opacity"]];
     
     [self._opacityStepper setAction:@selector(changeStepper:)];
     [self._opacityStepper setMinValue:0];
     [self._opacityStepper setMaxValue:100];
     [self._opacityStepper setIncrement:5];
-    [self._opacityStepper setIntegerValue:[[[NSUserDefaults standardUserDefaults] objectForKey:@"opacity"] integerValue]];
+    [self._opacityStepper setIntegerValue:[[NSUserDefaults standardUserDefaults] integerForKey:@"opacity"]];
     
-    [self._playSound setAction:@selector(toggleSound:)];
-    [self._playSound setState:[[NSUserDefaults standardUserDefaults] boolForKey:@"sound"]];
+    [self._waypointRadio setAction:@selector(setMode:)];
+    [self._waypointRadio setState:1 atRow:[[NSUserDefaults standardUserDefaults] integerForKey:@"mode"] column:0];
+    
+    [self._soundRadio setAction:@selector(setSound:)];
+    [self._soundRadio setState:1 atRow:[[NSUserDefaults standardUserDefaults] integerForKey:@"sound"] column:0];
     
     for (NSButton *button in self._eventButtons) {
         [button setAction:@selector(toggleBoss:)];
@@ -607,13 +560,33 @@
     [self.window setAlphaValue:[self._opacityStepper floatValue]/100];
 }
 
-- (IBAction) toggleSound:(NSButton*)sender {
-    if ([sender state] == NSOnState) {
-        NSLog(@"Sound ON");
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:YES] forKey:@"sound"];
-    } else {
-        NSLog(@"Sound OFF");
-        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:NO] forKey:@"sound"];
+- (IBAction) setMode:(NSMatrix*)sender {
+    NSString *name = [[sender selectedCell] title];
+    NSLog(@"Mode is now: %@", name);
+    
+    if ([name isEqualToString:@"Normal"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"mode"];
+    } else if ([name isEqualToString:@"/g"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"mode"];
+    } else if ([name isEqualToString:@"/s"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:2] forKey:@"mode"];
+    } else if ([name isEqualToString:@"Clipboard"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:3] forKey:@"mode"];
+    }
+
+    [self.masterViewController._statusTable reloadData];
+}
+
+- (IBAction) setSound:(NSMatrix*)sender {
+    NSString *name = [[sender selectedCell] title];
+    NSLog(@"Sound is now: %@", name);
+    
+    if ([name isEqualToString:@"No sound"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:0] forKey:@"sound"];
+    } else if ([name isEqualToString:@"Beep"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:1] forKey:@"sound"];
+    } else if ([name isEqualToString:@"Speech"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInteger:2] forKey:@"sound"];
     }
 }
 

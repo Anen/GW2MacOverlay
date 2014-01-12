@@ -36,13 +36,13 @@
     // Update display from preference
     [self._eventGroupsToDisplay removeAllObjects];
     for (EventGroup *evg in self._eventGroups) {
-        if ([[[NSUserDefaults standardUserDefaults] objectForKey:evg._name] boolValue]) {
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:evg._name]) {
             [self._eventGroupsToDisplay addObject:evg];
         }
     }
     
     // Update parser
-    [self._ejp updateByWorld:[[[NSUserDefaults standardUserDefaults] objectForKey:@"idWorld"] integerValue] andEventGroups:self._eventGroupsToDisplay];
+    [self._ejp updateByWorld:[[NSUserDefaults standardUserDefaults] integerForKey:@"idWorld"] andEventGroups:self._eventGroupsToDisplay];
     
     // Sort events
     NSSortDescriptor *sortActive = [NSSortDescriptor sortDescriptorWithKey:@"_isActive" ascending:NO selector:@selector(compare:)];
@@ -105,9 +105,9 @@
     
     if (clickedRow >= 0) { // Click on header returns -1
         // Get EventGroup
-        EventGroup *eg = [self._eventGroups objectAtIndex:clickedRow];
+        EventGroup *eg = [self._eventGroupsToDisplay objectAtIndex:clickedRow];
         
-        NSInteger mode = [[NSUserDefaults standardUserDefaults] integerForKey:@"idMode"];
+        NSInteger mode = [[NSUserDefaults standardUserDefaults] integerForKey:@"mode"];
         
         if (mode == 1 || mode == 2) {
             
@@ -137,7 +137,6 @@
             
             NSLog(@"PASTED");
         }
-        
     }
 }
 
